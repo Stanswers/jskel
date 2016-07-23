@@ -1,6 +1,6 @@
 # jskel
 
-Debut is a collection of my startup files, scripts, and basic configuration
+Jskel is a collection of my startup files, scripts, and basic configuration
 files. Setup is intended to be as generic as possible across the range of
 systems and users which I commonly use.
 
