@@ -1,0 +1,10 @@
+[Unit]
+Description=Synergy Client Daemon
+
+[Service]
+ExecStart=/usr/bin/synergyc --no-daemon -n cobol.stanswers.com 10.0.0.10
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+

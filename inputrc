@@ -1,0 +1,38 @@
+# This file controls the behaviour of line input editing for
+# programs that use the GNU Readline library.  Existing
+# programs include FTP, Bash, and GDB.
+#
+# You can re-read the inputrc file with C-x C-r.
+# Lines beginning with '#' are comments.
+# @see http://www.gnu.org/software/bash/manual/html_node/Sample-Init-File.html#Sample-Init-File
+#
+# First, include any system-wide bindings and variable
+# assignments from /etc/Inputrc
+$include /etc/Inputrc
+
+# Set various bindings for emacs mode.
+
+set editing-mode emacs
+
+$if mode=emacs
+
+C-h: backward-kill-word
+C-q: quoted-insert
+M-e: print-last-kbd-macro
+
+$endif
+
+# allow forward and backward search with arrow keys
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# enable ctrl left/right
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Completion options
+set show-all-if-ambiguous on
+set completion-query-items 500
+
+# Disable audio bell
+set bell-style none

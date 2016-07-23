@@ -1,0 +1,10 @@
+[Unit]
+Description=urxvt daemon (socket activation)
+Documentation=man:urxvtd(1) man:urxvt(1)
+
+[Socket]
+ListenStream=%t/urxvt256cd-%H
+
+[Install]
+WantedBy=sockets.target
+

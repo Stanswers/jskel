@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Eclipse
+Comment=Eclipse
+Icon=/opt/eclipse/icon.xpm
+Exec=/opt/eclipse/eclipse
+Terminal=false
+Categories=Development;IDE;Java;
+

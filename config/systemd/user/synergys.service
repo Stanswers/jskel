@@ -1,0 +1,10 @@
+[Unit]
+Description=Synergy Server Daemon
+
+[Service]
+ExecStart=/usr/bin/synergys --no-daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+

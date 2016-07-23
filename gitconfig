@@ -1,0 +1,57 @@
+[diff]
+	tool = vimdiff
+	guitool = meld
+
+[difftool "vimdiff"]
+	cmd = vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\"
+
+[merge]
+	tool = vimdiff
+	guitool = meld
+
+[alias]
+	up = "!git pull && git submodule update --init"
+	sw = "!git_switch() { git checkout \"$@\" && git submodule update --init; }; git_switch"
+	ass = add
+	cc = "!cc() { cd \"$GIT_PREFIX\"; git diff --cached $@ | awk -f ~/scripts/gitchurn; }; cc"
+	c = "!c() { cd \"$GIT_PREFIX\"; git diff $@ | awk -f ~/scripts/gitchurn; }; c"
+	st = status
+	ci = commit
+	br = branch -vv
+	co = checkout
+	dt = difftool -y -g
+	dtc = difftool -y -g --cached
+	vd = difftool
+	vdc = difftool --cached
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	who = shortlog -s --
+	undo = reset HEAD~1 --mixed
+	squash = rebase -i
+	wc = whatchanged
+	untrack = rm --cache --
+	amend = commit -a --amend
+
+[clean]
+	requireForce = false
+
+[user]
+	name = Justin Helgesen
+	email = justinhelgesen@gmail.com
+
+[core]
+	pager = less
+	editor = vim
+	excludesfile = /home/justinh/.gitignore_global
+
+[color]
+	ui = true
+
+[push]
+	default = simple
+
+[pull]
+	rebase = preserve
+
+[branch]
+	autosetuprebase = always
+

@@ -1,0 +1,44 @@
+*hell.txt*	For Vim version 7.3	Last change: 2016 June 13
+
+		Welcome To The Help Files From Hell~
+
+The help files from hell has 9 levels of disorganized information regarding
+just about anything.  Do try and keep up!
+
+0. Vimrc							|my-vimrc|
+1. Limbo							|my-limbo|
+2. Lust								|my-lust|
+3. Gluttony							|my-gluttony|
+4. Greed							|my-greed|
+5. Wrath							|my-wrath|
+6. Heresy							|my-heresy|
+7. Violence							|my-violence|
+8. Fraud							|my-fraud|
+9. Treachery							|my-treachery|
+
+==============================================================================
+0. My vimrc							*my-vimrc*
+
+This is where I will describe my vimrc.  Explaining requirements for plugins
+and all sorts of other shit.
+
+==============================================================================
+1. Limbo							*my-limbo*
+==============================================================================
+2. Lust								*my-lust*
+==============================================================================
+3. Gluttony							*my-gluttony*
+==============================================================================
+4. Greed							*my-greed*
+==============================================================================
+5. Wrath							*my-wrath*
+==============================================================================
+6. Heresy							*my-heresy*
+==============================================================================
+7. Violence							*my-violence*
+==============================================================================
+8. Fraud							*my-fraud*
+==============================================================================
+9. Treachery							*my-treachery*
+
+ vim:tw=78:ts=8:ft=help:norl:

@@ -1,0 +1,10 @@
+[Unit]
+Description=Urxvt Terminal Daemon
+Requires=urxvtd.socket
+
+[Service]
+ExecStart=/usr/bin/urxvt256cd -o -q
+
+[Install]
+WantedBy=default.target
+
