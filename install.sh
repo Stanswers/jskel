@@ -3,31 +3,40 @@
 copy() {
   local date=$(date +'%C%y%m%d_%H%M%S')
   local mode=0644
+  local dst="${HOME}/.${1}"
   [ $# -eq 2 ] && mode="${2}"
-  printf "Installing: %s\n" "${HOME}/.${1}"
-  install -m "${mode}" --backup --compare --suffix="~${date}" "${1}" "${HOME}/.${1}"
+  printf "  %-25s %s\n" "$(basename ${1})" "${dst}"
+  install -m "${mode}" --backup --compare --suffix="~${date}" "${1}" "${dst}"
 }
 
 clean() {
-  printf "Cleaning: %s\n" "${HOME}/.${1}"~*_*
-  rm "${HOME}/.${1}"~*_* &> /dev/null || true
+  local file="${HOME}/.${1}"~*_*
+  if [ -f ${file} ]; then
+    printf "  %s\n" "${file}"
+    rm ${file}
+  fi
 }
 
 mkd() {
-  printf "Creating directory: %s\n" "${HOME}/.${1}"
-  if mkdir -p "${HOME}/.${1}" &> /dev/null && [ $# -eq 2 ]; then
-    printf "Setting permission [%s]: %s\n" "${2}" "${HOME}/.${1}"
-    chmod "${2}" "${HOME}/.${1}"
+  local dir="${HOME}/.${1}"
+  if ! [ -d "${dir}" ]; then
+    printf "Creating directory: %s\n" "${dir}"
+    if mkdir -p "${dir}" &> /dev/null && [ $# -eq 2 ]; then
+      printf "Setting permission [%s]: %s\n" "${2}" "${dir}"
+      chmod "${2}" "${dir}"
+    fi
   fi
 }
 
 copyFiles() {
+  printf "Installing:\n"
   for f in "${@}"; do
     copy "${f}"
   done
 }
 
 cleanFiles() {
+  printf "Removing:\n"
   for f in "${@}"; do
     clean "${f}"
   done
@@ -51,7 +60,7 @@ vimInstall() {
   mkd "vim/doc"
   copyFiles "vimrc" "vim/doc/hell.txt" "vim/doc/tags"
   if ! [ -d "${HOME}/.vim/bundle/Vundle.vim" ]; then
-    mkdir -p "${HOME}/.vim/bundle" &> /dev/null;
+    mkd -p "vim/bundle"
     git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}/.vim/bundle/Vundle.vim"
   fi
   if command -v vim &> /dev/null; then
@@ -95,21 +104,38 @@ cleanupInstall() {
     "config/systemd/user/urxvtd.service"
 }
 
+print_help() {
+  local scriptName=$(basename "${0}")
+cat <<END
+Usage:  ${scriptName} [git] [shell] [vim] [x11] [all] [clean]
+Install jskel git, shell, vim, and x11 files.
+Clean backed up versions of jskel git, shell, vim, and x11 files.
+
+Options:
+  -h, --help                Prints this help menu
+
+END
+  print_configs "${1}"
+}
+
 main() {
-  [[ "${@}" =~ .*(-h +|--help).* ]] && echo HELP GOES HERE && return 0
+  [[ "${@}" =~ .*(-h +|--help).* ]] && print_help && return 0
   [ ${#} -eq 0 ] && gitInstall && shellInstall && vimInstall && x11Install
+  local doClean=1
   while [ ${#} -ne 0 ]; do
     case "${1}" in
       git) gitInstall; shift;;
       shell) shellInstall; shift;;
       vim) vimInstall; shift;;
       x11) x11Install; shift;;
-      clean) cleanupInstall; shift;;
+      all) gitInstall && shellInstall && vimInstall && x11Install; shift;;
+      clean) doClean=0; shift;;
       --) shift;;
       --* | -*) printf "WARN: Unknown option (ignored): %s\n"  "${1}" 1>&2; shift;;
       *) printf "WARN: Unknown target (ignored): %s\n"  "${1}" 1>&2; shift;;
     esac
   done
+  [ ${doClean} -eq 0 ] && cleanupInstall
 }
 
 main "${@}"
