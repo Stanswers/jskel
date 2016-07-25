@@ -104,7 +104,7 @@ cleanupInstall() {
     "config/systemd/user/urxvtd.service"
 }
 
-print_help() {
+printHelp() {
   local scriptName=$(basename "${0}")
 cat <<END
 Usage:  ${scriptName} [git] [shell] [vim] [x11] [all] [clean]
@@ -115,11 +115,10 @@ Options:
   -h, --help                Prints this help menu
 
 END
-  print_configs "${1}"
 }
 
 main() {
-  [[ "${@}" =~ .*(-h +|--help).* ]] && print_help && return 0
+  [[ "${@}" =~ .*(-h *|--help).* ]] && printHelp && return 0
   [ ${#} -eq 0 ] && gitInstall && shellInstall && vimInstall && x11Install
   local doClean=1
   while [ ${#} -ne 0 ]; do
