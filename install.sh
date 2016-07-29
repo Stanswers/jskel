@@ -5,14 +5,14 @@ copy() {
   local mode=0644
   local dst="${HOME}/.${1}"
   [ $# -eq 2 ] && mode="${2}"
-  printf "  %-25s %s\n" "$(basename ${1})" "${dst}"
+  printf "   %-25s %-51s\n" "$(basename ${1})" "${dst}"
   install -m "${mode}" --backup --compare --suffix="~${date}" "${1}" "${dst}"
 }
 
 clean() {
   local file="${HOME}/.${1}"~*_*
   if [ -f ${file} ]; then
-    printf "  %s\n" "${file}"
+    printf "   %s\n" ${file}
     rm ${file}
   fi
 }
@@ -26,6 +26,15 @@ mkd() {
       chmod "${2}" "${dir}"
     fi
   fi
+}
+
+diffFiles() {
+  printf "Diff files:\n"
+  for f in "${@}"; do
+    if ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
+      printf "\033[0;31m   %s\033[0m\n" "${f}"
+    fi
+  done
 }
 
 copyFiles() {
@@ -47,7 +56,8 @@ gitInstall() {
 }
 
 shellInstall() {
-  copyFiles "bashrc" "bash_aliases" "bash_logout" "bash_profile" "inputrc" "sshrc"
+  copyFiles "bashrc" "bash_aliases" "bash_logout" "bash_profile" "inputrc" \
+    "sshrc"
   wget -q -nc \
     "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark" \
     -O "${HOME}/.dircolors" || echo -n
@@ -61,7 +71,8 @@ vimInstall() {
   copyFiles "vimrc" "vim/doc/hell.txt" "vim/doc/tags"
   if ! [ -d "${HOME}/.vim/bundle/Vundle.vim" ]; then
     mkd -p "vim/bundle"
-    git clone https://github.com/VundleVim/Vundle.vim.git "${HOME}/.vim/bundle/Vundle.vim"
+    git clone "https://github.com/VundleVim/Vundle.vim.git" \
+      "${HOME}/.vim/bundle/Vundle.vim"
   fi
   if command -v vim &> /dev/null; then
     vim +PluginInstall +qall
@@ -73,15 +84,14 @@ x11Install() {
   # This is a trick to copy the existing file (the same as the others
   # before deleting the 2nd Xdefaults and making it a symlink
   if ! [ -L "${HOME}/.Xresources" ]; then
-    install -m 0644 --backup --suffix="~$(DATE)" Xresources "${HOME}/.Xdefaults"
+    local date=$(date +'%C%y%m%d_%H%M%S')
+    install -m 0644 --backup --suffix="~${date}" Xresources "${HOME}/.Xdefaults"
     rm "${HOME}/.Xresources"
     ln -s "${HOME}/.Xdefaults" "${HOME}/.Xresources"
   fi
-
   if command -v gsettings &> /dev/null; then
     gsettings set org.gnome.desktop.wm.preferences audible-bell false
   fi
-
   if command -v urxvtd &> /dev/null; then
     if command -v systemctl &> /dev/null; then
       mkdir -p "${HOME}/.config/systemd/user" &> /dev/null
@@ -97,17 +107,11 @@ x11Install() {
   fi
 }
 
-cleanupInstall() {
-  cleanFiles "gitconfig" "gitk" "gitignore_global" "bashrc" "bash_aliases" \
-    "bash_logout" "bash_profile" "inputrc" "sshrc" "vimrc" \
-    "vim/doc/hell.txt" "vim/doc/tags" "config/systemd/user/urxvtd.socket" \
-    "config/systemd/user/urxvtd.service"
-}
-
 printHelp() {
   local scriptName=$(basename "${0}")
 cat <<END
-Usage:  ${scriptName} [git] [shell] [vim] [x11] [all] [clean]
+Usage:  ${scriptName} [options] [git] [shell] [vim] [x11]
+        ${scriptName} [options] [diff] [clean]
 Install jskel git, shell, vim, and x11 files.
 Clean backed up versions of jskel git, shell, vim, and x11 files.
 
@@ -118,23 +122,34 @@ END
 }
 
 main() {
-  [[ "${@}" =~ .*(-h *|--help).* ]] && printHelp && return 0
-  [ ${#} -eq 0 ] && gitInstall && shellInstall && vimInstall && x11Install
-  local doClean=1
+  local -A targets actions empty
+  local -a files
+  files=( "gitconfig" "gitk" "gitignore_global" "bashrc" "bash_aliases" \
+    "bash_logout" "bash_profile" "inputrc" "sshrc" "vimrc" \
+    "vim/doc/hell.txt" "vim/doc/tags" "config/systemd/user/urxvtd.socket" \
+    "config/systemd/user/urxvtd.service" )
+  targets=([git]="gitInstall" [shell]="shellInstall" \
+           [vim]="vimInstall" [x11]="x11Install")
+  [ ${#} -eq 0 ] && actions=${targets[@]}
   while [ ${#} -ne 0 ]; do
     case "${1}" in
-      git) gitInstall; shift;;
-      shell) shellInstall; shift;;
-      vim) vimInstall; shift;;
-      x11) x11Install; shift;;
-      all) gitInstall && shellInstall && vimInstall && x11Install; shift;;
-      clean) doClean=0; shift;;
-      --) shift;;
-      --* | -*) printf "WARN: Unknown option (ignored): %s\n"  "${1}" 1>&2; shift;;
-      *) printf "WARN: Unknown target (ignored): %s\n"  "${1}" 1>&2; shift;;
+      git) actions[git]=${targets[git]}; shift;;
+      shell) actions[shell]=${targets[shell]}; shift;;
+      vim) actions[vim]=${targets[vim]}; shift;;
+      x11) actions[x11]=${targets[x11]}; shift;;
+      clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
+      diff) actions=${empty[@]}; actions[diff]="diffFiles"; break;;
+      -h) printHelp; return 0;;
+      --help) printHelp; return 0;;
+      --* | -*)
+        printf "WARN: Unknown option (ignored): %s\n"  "${1}" 1>&2; shift;;
+      *)
+        printf "WARN: Unknown target (ignored): %s\n"  "${1}" 1>&2; shift;;
     esac
   done
-  [ ${doClean} -eq 0 ] && cleanupInstall
+  for action in ${actions[@]}; do
+    ${action} ${files[@]}
+  done
 }
 
 main "${@}"
