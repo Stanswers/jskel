@@ -10,7 +10,7 @@ life just a little bit easier.
 ### bash_completion.maven
 
 Bash completion for maven is provided by
-[https://github.com/juven/maven-bash-completion]
+<https://github.com/juven/maven-bash-completion>
 
 ### bash_logout
 
