@@ -16,7 +16,7 @@ Overwritten files will be backed up as <filename>~YYMMDDHHmmSS
 
 ## Further Reading
 
-0. Skel [README](doc/README.skel.md)
-1. Synergy [README](doc/README.synergy.md)
-2. Grub [README](doc/README.grub.md)
+0. [Skel](doc/README.skel.md)
+1. [Synergy](doc/README.synergy.md)
+2. [Grub](doc/README.grub.md)
 3. [License](LICENSE.md)
