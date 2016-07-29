@@ -110,14 +110,14 @@ autocmd FileType gitcommit setlocal spell
 
 " Trim trailing white space when writing
 autocmd FileType python,make,c,cpp,java,php,xml,html,sh,vim
-	\ autocmd BufWritePre <buffer> :%s/\s\+$//e
+  \ autocmd BufWritePre <buffer> if ! &diff | :%s/\s\+$//e | endif
 
 " Use ":DiffOrig" to see the differences
 " between the current buffer and the file it was loaded from.
 " see ":help DiffOrig"
 if !exists(':DiffOrig')
 	command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		\ | wincmd p | diffthis
+	 \ | wincmd p | diffthis
 endif
 
 " }}}
@@ -136,6 +136,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'tpope/vim-fugitive'
 	Plugin 'altercation/vim-colors-solarized'
 	Plugin 'mtth/scratch.vim'
+	Plugin 'scrooloose/nerdtree'
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -169,10 +170,12 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	" Solarized color theme
 	if isdirectory(glob("~/.vim/bundle/vim-colors-solarized"))
-		if $TERM != 'rxvt-256color'
+		if $TERM != 'rxvt-256color' && ! has('gui_running')
 			let g:solarized_termcolors=256   " Use degraded 256 color schema
 		endif
-		let g:solarized_termtrans=1        " Transparant background
+		if $TERM == 'rxvt-256color'
+			let g:solarized_termtrans=1        " Transparant background
+		endif
 		let g:solarized_hitrail=1          " Hilight trailing white space
 		set background=dark                " Configure solarized[dark|light]
 		colorscheme solarized              " Activate solarized color scheme
