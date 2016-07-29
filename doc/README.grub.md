@@ -2,9 +2,9 @@
 
 ## Set default grub entry to last used
 
-Although /etc/default/grub contains 'GRUB_DEFAULT=saved' it doesn't
-set 'GRUB_SAVEDEFAULT' so the last grub entry used to boot is not saved.  Add
-the following to /etc/default/grub:
+Although `/etc/default/grub` contains `GRUB_DEFAULT=saved` it doesn't
+set `GRUB_SAVEDEFAULT` so the last grub entry used to boot is not saved.  Add
+the following to `/etc/default/grub`:
 
 ```
 GRUB_SAVEDEFAULT="true"
@@ -27,7 +27,7 @@ convert a font at a desired size into a format that grub can use.
 sudo grub2-mkfont -s 48 -o /boot/grub2/consola.pf2 ~/.local/share/fonts/consola.ttf
 ```
 
-Add the following to /etc/default/grub:
+Add the following to `/etc/default/grub`:
 
 ```bash
 GRUB_FONT=/boot/grub2/consola.pf2
