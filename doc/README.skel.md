@@ -1,6 +1,6 @@
 # Skel
 
-## About
+All my bash skeleton files.
 
 ### bash_aliases
 
@@ -23,8 +23,8 @@ environmental variable if the directory exists.
 
 ### bashrc
 
-A simple `~/.bashrc` file. Sources the system `/etc/bashrc`,
-`~/.bash_completion.maven`, `~/.bash_aliases`, and other shall files.  Sets up
+My `~/.bashrc` file. Sources the system `/etc/bashrc`,
+`~/.bash_completion.maven`, `~/.bash_aliases`, and other shell files.  Sets up
 environment variables.
 
 ### inputrc
