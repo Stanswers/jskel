@@ -1,5 +1,7 @@
 # Grub
 
+A few tips for configuring grub.
+
 ## Set default grub entry to last used
 
 Although `/etc/default/grub` contains `GRUB_DEFAULT=saved` it doesn't
