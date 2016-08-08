@@ -1,7 +1,5 @@
 # Synergy
 
-## About
-
 Synergy is a software KVM that connects via a network connection.  Debut
 includes some systemd service files and synergy configuration files.
 
