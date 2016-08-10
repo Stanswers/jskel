@@ -161,7 +161,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	" YCM Settings
 	if isdirectory(glob("~/.vim/bundle/YouCompleteMe"))
-		set nocompatible                   " Required for eclim plugin
 		let g:EclimCompletionMethod = 'omnifunc'
 		let g:ycm_autoclose_preview_window_after_completion = 1
 		set wildmode=longest,list,full
@@ -172,14 +171,15 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	if isdirectory(glob("~/.vim/bundle/vim-colors-solarized"))
 		if $TERM != 'rxvt-256color' && ! has('gui_running')
 			let g:solarized_termcolors=256   " Use degraded 256 color schema
+			set t_Co=256
 		endif
 		if $TERM == 'rxvt-256color'
-			let g:solarized_termtrans=1        " Transparant background
+			let g:solarized_termtrans=1      " Transparant background
 		endif
 		let g:solarized_hitrail=1          " Hilight trailing white space
 		set background=dark                " Configure solarized[dark|light]
-		colorscheme solarized              " Activate solarized color scheme
 		syntax enable                      " Enable syntax highlighting
+		colorscheme solarized              " Activate solarized color scheme
 	endif
 endif
 " }}}
