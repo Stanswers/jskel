@@ -153,7 +153,7 @@ if command -v mvn &> /dev/null; then
   alias mime='mvn clean install eclipse:eclipse -DskipTests -Dmaven.test.skip=true -Djavax.xml.accessExternalSchema=all -Dmaven.javadoc.skip=true'
   alias cobertura='mvn clean cobertura:cobertura'
 fi
-if command -v rdesktop-vrdp; then
+if command -v rdesktop-vrdp &> /dev/null; then
   alias rdp='rdesktop-vrdp -g 1920x1165 -u "orc\justinh" ts1.chicago.orcsoftware.com'
 fi
 if command -v python &> /dev/null; then
