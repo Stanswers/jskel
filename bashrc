@@ -48,12 +48,12 @@ if [ "$PS1" ]; then
 fi
 
 # Source orc bashrc
-if getent passwd orc > /dev/null 2>&1; then
+if getent passwd orc &> /dev/null; then
   [ -f ${HOME}/.bashrc.orc ] && source ${HOME}/.bashrc.orc
 fi
 
 # Source TBricks bashrc
-if getent passwd tbricks > /dev/null 2>&1; then
+if getent passwd tbricks &> /dev/null; then
   [ -f ${HOME}/.bashrc.tbricks ] && source ${HOME}/.bashrc.tbricks
 fi
 
