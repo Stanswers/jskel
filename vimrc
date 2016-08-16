@@ -103,7 +103,7 @@ autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4 shiftwidth=4
 autocmd FileType markdown,help,text setlocal tabstop=8 shiftwidth=8 textwidth=78
 
 " tabs->spaces
-autocmd FileType c,cpp,sh,xml,html,java setlocal expandtab
+autocmd FileType c,cpp,sh,xml,html,java,perl setlocal expandtab
 
 " turn on spell check
 autocmd FileType gitcommit setlocal spell
