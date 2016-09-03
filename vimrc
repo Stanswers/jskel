@@ -53,9 +53,11 @@
 " }}}
 " General Key Mappings, Settings and Functions "{{{
 "
-" Map ,cd to change the local working directory to that of the current buffer
+" Change the local working directory to that of the current buffer
 noremap <Leader>cd :lcd %:p:h<CR>
-noremap <Leader>rts :RemoveTrailingSpaces<CR>
+" Remove trailing white space
+nnoremap <Leader>rt :%s/\s\+$//e \| :noh<CR>
+vnoremap <Leader>rt :s/\s\+$//e \| :noh<CR>
 
 " Set display characters for list
 set listchars=trail:~,tab:»·,eol:▼
@@ -109,8 +111,8 @@ autocmd FileType c,cpp,sh,xml,html,java,perl setlocal expandtab
 autocmd FileType gitcommit setlocal spell
 
 " Trim trailing white space when writing
-autocmd FileType python,make,c,cpp,java,php,xml,html,sh,vim
-  \ autocmd BufWritePre <buffer> if ! &diff | :%s/\s\+$//e | endif
+"autocmd FileType python,make,c,cpp,java,php,xml,html,sh,vim
+  "\ autocmd BufWritePre <buffer> if ! &diff | :%s/\s\+$//e | endif
 
 " Use ":DiffOrig" to see the differences
 " between the current buffer and the file it was loaded from.
@@ -141,12 +143,33 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
 		Plugin 'scrooloose/nerdcommenter'
+		if isdirectory(glob("~/.vim/bundle/tagbar"))
+			noremap <Leader>nt :NERDTreeToggle<CR>
+			noremap <Leader>nc :NERDTreeClose<CR>
+			noremap <Leader>nf :NERDTreeFind<CR>
+		endif
+	endif
+	if v:version > 701
+		Plugin 'majutsushi/tagbar'
+		if isdirectory(glob("~/.vim/bundle/tagbar"))
+			noremap <Leader>ol :TagbarToggle<CR>
+		endif
 	endif
 	if v:version > 702
 		Plugin 'Chiel92/vim-autoformat'
+		if isdirectory(glob("~/.vim/bundle/vim-autoformat"))
+			noremap <Leader>af :Autoformat<CR>
+		endif
 	endif
 	if v:version > 703
 		Plugin 'Valloric/YouCompleteMe'
+		" YCM Settings
+		if isdirectory(glob("~/.vim/bundle/YouCompleteMe"))
+			let g:EclimCompletionMethod = 'omnifunc'
+			let g:ycm_autoclose_preview_window_after_completion = 1
+			set wildmode=longest,list,full
+			set wildmenu
+		endif
 	endif
 	" =========================== Finish Vundle Config ========================
 	call vundle#end()                  " required
@@ -157,14 +180,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	if isdirectory(glob("~/.vim/bundle/scratch.vim"))
 		let g:scratch_autohide = 0         " Scratch plugin setting
-	endif
-
-	" YCM Settings
-	if isdirectory(glob("~/.vim/bundle/YouCompleteMe"))
-		let g:EclimCompletionMethod = 'omnifunc'
-		let g:ycm_autoclose_preview_window_after_completion = 1
-		set wildmode=longest,list,full
-		set wildmenu
 	endif
 
 	" Solarized color theme
