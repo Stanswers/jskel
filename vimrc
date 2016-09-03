@@ -56,8 +56,8 @@
 " Change the local working directory to that of the current buffer
 noremap <Leader>cd :lcd %:p:h<CR>
 " Remove trailing white space
-nnoremap <Leader>rt :%s/\s\+$//e \| :noh<CR>
-vnoremap <Leader>rt :s/\s\+$//e \| :noh<CR>
+noremap <Leader>rts :%s/\s\+$//e \| :noh<CR>
+noremap <Leader>rt :s/\s\+$//e \| :noh<CR>
 
 " Set display characters for list
 set listchars=trail:~,tab:»·,eol:▼
