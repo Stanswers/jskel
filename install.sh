@@ -10,11 +10,13 @@ copy() {
 }
 
 clean() {
-  local file="${HOME}/.${1}"~*_*
-  if [ -f ${file} ]; then
-    printf "   %s\n" ${file}
-    rm ${file}
-  fi
+  local files=("${HOME}/.${1}"~*_*)
+  for file in ${files[@]}; do
+    if [ -f ${file} ]; then
+      printf "   %s\n" ${file}
+      rm ${file}
+    fi
+  done
 }
 
 mkd() {
