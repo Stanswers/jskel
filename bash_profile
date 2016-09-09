@@ -12,4 +12,5 @@ done
 export PATH
 
 [ -f ${HOME}/.bash_profile.tbricks ] && source ${HOME}/.bash_profile.tbricks
+[ -f ${HOME}/.bash_profile.orc ] && source ${HOME}/.bash_profile.orc
 

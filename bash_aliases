@@ -100,14 +100,6 @@ if [ -d ${HOME}/workspace/maven-projects ]; then
   alias mp='cdpath ${HOME}/workspace/maven-projects'
 fi
 
-if [ -d ${HOME}/workspace/tb ]; then
-  _tb() {
-    _cdpath "${HOME}/workspace/tb"
-  }
-  complete -o nospace -F _tb tb
-  alias tb='cdpath ${HOME}/workspace/tb'
-fi
-
 if [ -d ${HOME}/workspace ]; then
   _ws() {
     _cdpath "${HOME}/workspace"
