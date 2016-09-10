@@ -10,8 +10,8 @@ fi
 
 case "$(uname -s)" in
   CYGWIN*|MINGW32*|MSYS*)
-    # If this is not cygwin set JAVA_HOME and M2_REPO environment variables let
-    # windows set those variables. Cygwin doesn't do evaluate dircolors :(
+    # let windows set the JAVA_HOME and M2_REPO environment variables
+    # Cygwin doesn't do evaluate dircolors :(
     [ -f ${HOME}/.dircolors ] && eval "$(dircolors -b ${HOME}/.dircolors)"
     alias ls='ls --color=auto'
     ;;
@@ -26,6 +26,23 @@ case "$(uname -s)" in
 esac
 
 if [ "$PS1" ]; then
+  cdpath() {
+    cd "${1}/${2}"
+  }
+
+  _cdpath() {
+    local cur path len dirs
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    path="${1}"
+    len=$((${#path} + 1))
+    for d in "${path}/${cur}"*; do
+      if [ -d "${d}" ] && [[ "${d}" != */target* ]]; then
+        dirs+="${d:$len}/ "
+      fi
+    done
+    COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
+  }
+
   export PAGER=/usr/bin/less
   export SYSTEMD_PAGER=/usr/bin/less
   export EDITOR=/usr/bin/vim
@@ -47,13 +64,10 @@ if [ "$PS1" ]; then
   stty -ixon
 fi
 
+
 # Source orc bashrc
-if getent passwd orc &> /dev/null; then
-  [ -f ${HOME}/.bashrc.orc ] && source ${HOME}/.bashrc.orc
-fi
+[ -f ${HOME}/.bashrc.orc ] && source ${HOME}/.bashrc.orc
 
 # Source TBricks bashrc
-if getent passwd tbricks &> /dev/null; then
-  [ -f ${HOME}/.bashrc.tbricks ] && source ${HOME}/.bashrc.tbricks
-fi
+[ -f ${HOME}/.bashrc.tbricks ] && source ${HOME}/.bashrc.tbricks
 

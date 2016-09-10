@@ -67,45 +67,22 @@ _up() {
 }
 complete -o nospace -F _up up
 
-cdpath() {
-  cd "${1}/${2}"
-}
+if type _cdpath &> /dev/null && type cdpath &> /dev/null; then
+  if [ -d ${HOME}/workspace ]; then
+    _ws() {
+      _cdpath "${HOME}/workspace"
+    }
+    complete -o nospace -F _ws ws
+    alias ws='cdpath ${HOME}/workspace'
+  fi
 
-_cdpath() {
-  local cur path len dirs
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  path="${1}"
-  len=$((${#path} + 1))
-  for d in "${path}/${cur}"*; do
-    if [ -d "${d}" ] && [[ "${d}" != */target* ]]; then
-      dirs+="${d:$len}/ "
-    fi
-  done
-  COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
-}
-
-if [ -d ${HOME}/workspace/maven-projects/gateways ]; then
-  _gw() {
-    _cdpath "${HOME}/workspace/maven-projects/gateways"
-  }
-  complete -o nospace -F _gw gw
-  alias gw='cdpath ${HOME}/workspace/maven-projects/gateways'
-fi
-
-if [ -d ${HOME}/workspace/maven-projects ]; then
-  _mp() {
-    _cdpath "${HOME}/workspace/maven-projects"
-  }
-  complete -o nospace -F _mp mp
-  alias mp='cdpath ${HOME}/workspace/maven-projects'
-fi
-
-if [ -d ${HOME}/workspace ]; then
-  _ws() {
-    _cdpath "${HOME}/workspace"
-  }
-  complete -o nospace -F _ws ws
-  alias ws='cdpath ${HOME}/workspace'
+  if [ -d ${HOME}/src ]; then
+    _src() {
+      _cdpath "${HOME}/src"
+    }
+    complete -o nospace -F _ws ws
+    alias src='cdpath ${HOME}/src'
+  fi
 fi
 
 if [ -f ${HOME}/.sshrc ]; then
