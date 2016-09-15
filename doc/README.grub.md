@@ -18,9 +18,10 @@ Update the grub config:
 sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 ```
 
-note: grub config location can vary (i.e. UEFI vs MBR)
+Grub config location can vary, fedora is being used in the example above.
+Find the location of your `grub.cfg` with `sudo locate grub.cfg`
 
-## HiDpi grub menu
+## HiDpi grub menus
 
 Well grub doesn't support hidpi displays.  To work around this we must
 convert a font at a desired size into a format that grub can use.
