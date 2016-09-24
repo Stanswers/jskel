@@ -33,7 +33,7 @@ mkd() {
 diffFiles() {
   printf "Diff files:\n"
   for f in "${@}"; do
-    if ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
+    if [ -e "${HOME}/.${f}" ] && ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
       printf "\033[0;31m   %s\033[0m\n" "${f}"
     fi
   done
