@@ -144,6 +144,7 @@ fi
 if [ -f "${HOME}/scripts/gwdb.sh" ]; then
   alias gwdb='${HOME}/scripts/gwdb.sh'
 fi
+alias killall='killall -u ${USER}'
 alias du='du -h'
 alias df='df -h'
 alias ls='ls -hl --color=auto'
