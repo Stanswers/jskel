@@ -124,12 +124,11 @@ END
 }
 
 main() {
-  local -A targets actions empty
-  local -a files
-  files=( "gitconfig" "gitk" "gitignore_global" "bashrc" "bash_aliases" \
-    "bash_logout" "bash_profile" "inputrc" "sshrc" "vimrc" \
-    "vim/doc/hell.txt" "vim/doc/tags" "config/systemd/user/urxvtd.socket" \
-    "config/systemd/user/urxvtd.service" )
+  local -A targets actions empty files
+  files=([git]="gitconfig gitk gitignore_global" \
+         [shell]="bashrc bash_aliases bash_logout bash_profile inputrc sshrc" \
+         [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
+         [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service" )
   targets=([git]="gitInstall" [shell]="shellInstall" \
            [vim]="vimInstall" [x11]="x11Install")
   [ ${#} -eq 0 ] && actions=${targets[@]}
@@ -140,7 +139,7 @@ main() {
       vim) actions[vim]=${targets[vim]}; shift;;
       x11) actions[x11]=${targets[x11]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
-      diff) actions=${empty[@]}; actions[diff]="diffFiles"; break;;
+      diff) diffFiles ${files[@]}; return 0;;
       -h) printHelp; return 0;;
       --help) printHelp; return 0;;
       --* | -*)
@@ -150,7 +149,7 @@ main() {
     esac
   done
   for action in ${actions[@]}; do
-    ${action} ${files[@]}
+    ${action} ${files[${action}]}
   done
 }
 
