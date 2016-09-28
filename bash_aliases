@@ -22,6 +22,19 @@ installJaxpProperties() {
   fi
 }
 
+lsop() {
+    local args=("-nP")
+    case "$1" in
+        [0-9]*) args+=("-iTCP:$1");;
+        -l) args+=("-sTCP:LISTEN" "-iTCP:$2");;
+        -u) args+=("-iUDP:$2");;
+        *)
+            echo "Usage: ${FUNCNAME[0]} [-i -l] port" >&2
+            return 1
+    esac
+    sudo lsof "${args[@]}"
+}
+
 up() {
   local search="$( [[ "${1}" ]] && echo "${1}" || echo "." )"
   local dir="$( dirname "$( pwd )" )"
