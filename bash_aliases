@@ -129,11 +129,13 @@ if command -v xdg-open &> /dev/null; then
   alias xo='xdg-open '
 fi
 if command -v mvn &> /dev/null; then
-  alias mi='mvn clean install -DskipTests -Dmaven.test.skip=true -Djavax.xml.accessExternalSchema=all -Dmaven.javadoc.skip=true'
-  alias mit='mvn clean install -Djavax.xml.accessExternalSchema=all -Dmaven.javadoc.skip=true'
-  alias me='mvn eclipse:eclipse'
-  alias mime='mvn clean install eclipse:eclipse -DskipTests -Dmaven.test.skip=true -Djavax.xml.accessExternalSchema=all -Dmaven.javadoc.skip=true'
-  alias cobertura='mvn clean cobertura:cobertura'
+  alias mi='mvn install -DskipTests -Dmaven.test.skip=true -Djavax.xml.accessExternalSchema=all'
+  alias me='mvn eclipse:eclipse -Djavax.xml.accessExternalSchema=all'
+  alias mie='mvn install eclipse:eclipse -DskipTests -Dmaven.test.skip=true -Djavax.xml.accessExternalSchema=all'
+  alias mit='mvn install -Djavax.xml.accessExternalSchema=all'
+  alias mc="mvn clean"
+  alias mcec="mvn clean eclipse:clean"
+  alias cobertura='mvn cobertura:cobertura'
 fi
 if command -v rdesktop-vrdp &> /dev/null; then
   alias rdp='rdesktop-vrdp -g 1920x1165 -u "orc\justinh" ts1.chicago.orcsoftware.com'
