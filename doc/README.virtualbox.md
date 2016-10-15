@@ -1,6 +1,6 @@
 # VirtualBox 5.1
 
-Tips for installing VirtualBox 5.1 with SecureBoot on Fedora
+Tips for installing VirtualBox 5.1 with Secure Boot on Fedora
 
 ## Install VirtaulBox 5.1
 
@@ -36,7 +36,7 @@ Tips for installing VirtualBox 5.1 with SecureBoot on Fedora
 
   see [virtualbox](https://www.virtualbox.org/wiki/Linux_Downloads) and [if-not-true-then-false](http://www.if-not-true-then-false.com/2010/install-virtualbox-with-yum-on-fedora-centos-red-hat-rhel/)
 
-## Sign Kernel Modules for SecureBoot
+## Sign Kernel Modules for Secure Boot
 
   1. Generate certificate
 
