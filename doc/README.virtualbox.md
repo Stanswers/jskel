@@ -4,14 +4,13 @@ Tips for installing VirtualBox 5.1 with SecureBoot on Fedora
 
 ## Install VirtaulBox 5.1
 
-  1. Download the [Oracle public key](https://www.virtualbox.org/download/oracle_vbox.asc) and import it.
+  1. Import the [Oracle public key](https://www.virtualbox.org/download/oracle_vbox.asc).
 
   ```
-  wget https://www.virtualbox.org/download/oracle_vbox.asc
-  sudo rpm --import oracle_vbox.asc
+  sudo rpm --import https://www.virtualbox.org/download/oracle_vbox.asc
   ```
 
-  2. Install the [Fedora repo file](http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo) to /etc/yum.repos.d/
+  2. Install the [Fedora VirtualBox repo file](http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo) to /etc/yum.repos.d/
 
   ```
   sudo wget -O /etc/yum.repos.d/virtualbox.repo http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
