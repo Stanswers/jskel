@@ -139,6 +139,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'altercation/vim-colors-solarized'
 	Plugin 'mtth/scratch.vim'
 	Plugin 'scrooloose/nerdtree'
+	Plugin 'lyuts/vim-rtags'
+	Plugin 'Shougo/neocomplete.vim'
+
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -161,16 +164,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 			noremap <Leader>af :Autoformat<CR>
 		endif
 	endif
-	if v:version > 703
-		Plugin 'Valloric/YouCompleteMe'
-		" YCM Settings
-		if isdirectory(glob("~/.vim/bundle/YouCompleteMe"))
-			let g:EclimCompletionMethod = 'omnifunc'
-			let g:ycm_autoclose_preview_window_after_completion = 1
-			set wildmode=longest,list,full
-			set wildmenu
-		endif
-	endif
 	" =========================== Finish Vundle Config ========================
 	call vundle#end()                  " required
 	filetype plugin indent on          " required
@@ -178,8 +171,56 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	" filetype plugin on
 	" =========================== Plugin Settings ==============================
 
+	if isdirectory(glob("~/.vim/bundle/vim-rtags")) && isdirectory(glob("~/.vim/bundle/neocomplete.vim"))
+		function! SetupNeocomleteForCppWithRtags()
+			setlocal omnifunc=RtagsCompleteFunc
+			if !exists('g:neocomplete#sources#omni#input_patterns')
+				let g:neocomplete#sources#omni#input_patterns = {}
+			endif
+			let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+			let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
+			set completeopt+=longest,menuone
+		endfunction
+		autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
+	endif
+
+	if isdirectory(glob("~/.vim/bundle/neocomplete.vim"))
+		let g:acp_enableAtStartup = 0
+		let g:neocomplete#enable_at_startup = 1
+		let g:neocomplete#enable_smart_case = 1
+		let g:neocomplete#sources#syntax#min_keyword_length = 3
+		let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+		let g:neocomplete#sources#dictionary#dictionaries = {
+			\ 'default' : '',
+			\ 'vimshell' : $HOME.'/.vimshell_hist',
+			\ 'scheme' : $HOME.'/.gosh_completions'
+		\ }
+		if !exists('g:neocomplete#keyword_patterns')
+			let g:neocomplete#keyword_patterns = {}
+		endif
+		let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+		inoremap <expr><C-g>     neocomplete#undo_completion()
+		inoremap <expr><C-l>     neocomplete#complete_common_string()
+		inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+		function! s:my_cr_function()
+			return pumvisible() ? "\<C-y>" : "\<CR>"
+		endfunction
+		inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+		inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+		inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+		if !exists('g:neocomplete#sources#omni#input_patterns')
+			let g:neocomplete#sources#omni#input_patterns = {}
+		endif
+	endif
+
+	" Scratch plugin setting
 	if isdirectory(glob("~/.vim/bundle/scratch.vim"))
-		let g:scratch_autohide = 0         " Scratch plugin setting
+		let g:scratch_autohide = 0
 	endif
 
 	" Solarized color theme
