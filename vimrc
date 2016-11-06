@@ -85,9 +85,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	" filetype plugin on
 	" =========================== Plugin Settings ==============================
 
+	let g:my#bundles = map(copy(g:vundle#bundles), 'v:val.name_spec')
 	function! IsPluginInstalled(name)
-		let bundles = map(copy(g:vundle#bundles), 'v:val.name_spec')
-		return index(bundles, a:name) > -1
+		return index(g:my#bundles, a:name) > -1
 	endfunction
 
 	"Autoformat settings
