@@ -23,18 +23,16 @@
 "   2) Install other plugins by executing :PluginInstall
 "   Reference: https://github.com/VundleVim/Vundle.vim
 "
-"  YouCompleteMe: code completion plugin Setup
-"   1) dnf install automake gcc gcc-c++ kernel-devel cmake clang-devel python-devel python3-devel ncurses-compat-libs
-"   2) Execute :PluginInstall
-"   3) cd ~/.vim/bundle/YouCompleteMe
-"   4) ./install.py --clang-completer --system-libclang
-"   Reference: https://github.com/Valloric/YouCompleteMe
-"
 "  VimProc:
 "   1) Execute :PluginInstall
 "   2) $ cd ~/.vim/bundle/vimproc.vim
 "      $ make
 "   References: :help vimproc
+"
+"  VimRtags:
+"    vim-rtags requires RTags to be installed.  See
+"    doc/README.codecompletion.md and https://github.com/Andersbakken/rtags
+"    for more information.
 "
 "  VimAutoFormat:
 "   Optional External Format Programs:
