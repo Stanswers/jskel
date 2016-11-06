@@ -71,3 +71,6 @@ fi
 # Source TBricks bashrc
 [ -f ${HOME}/.bashrc.tbricks ] && source ${HOME}/.bashrc.tbricks
 
+
+# added by travis gem
+[ -f ${HOME}/.travis/travis.sh ] && source ${HOME}/.travis/travis.sh

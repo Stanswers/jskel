@@ -51,6 +51,134 @@
 "   References: https://github.com/Chiel92/vim-autoformat
 "
 " }}}
+" Plugin Settings "{{{
+"
+
+" Only configure plugins if vundle is installed
+if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
+	" =========================== Vundle Config ================================
+	set nocompatible                   " be iMproved, required
+	filetype off                       " required
+	set rtp+=~/.vim/bundle/Vundle.vim  " set the runtime path to include Vundle
+	call vundle#begin()                " initialize Vundle
+	" =========================== Activate Plugins below =======================
+	Plugin 'gmarik/Vundle.vim'         " let Vundle manage Vundle, required
+	Plugin 'tpope/vim-fugitive'
+	Plugin 'altercation/vim-colors-solarized'
+	Plugin 'mtth/scratch.vim'
+	Plugin 'scrooloose/nerdtree'
+	Plugin 'lyuts/vim-rtags'
+	Plugin 'Shougo/neocomplete.vim'
+	if v:version > 700
+		Plugin 'Shougo/vimshell.vim'
+		Plugin 'Shougo/vimproc.vim'
+		Plugin 'scrooloose/nerdcommenter'
+	endif
+	if v:version > 701
+		Plugin 'majutsushi/tagbar'
+	endif
+	if v:version > 702
+		Plugin 'Chiel92/vim-autoformat'
+	endif
+	" =========================== Finish Vundle Config ========================
+	call vundle#end()                  " required
+	filetype plugin indent on          " required
+	" To ignore plugin indent changes, instead use:
+	" filetype plugin on
+	" =========================== Plugin Settings ==============================
+
+	function! IsPluginInstalled(name)
+		let bundles = map(copy(g:vundle#bundles), 'v:val.name_spec')
+		return index(bundles, a:name) > -1
+	endfunction
+
+	"Autoformat settings
+	if IsPluginInstalled('Chiel92/vim-autoformat')
+		noremap <Leader>af :Autoformat<CR>
+	endif
+
+	" NERDTree Settings
+	if IsPluginInstalled('scrooloose/nerdtree')
+		noremap <Leader>nt :NERDTreeToggle<CR>
+		noremap <Leader>nc :NERDTreeClose<CR>
+		noremap <Leader>nf :NERDTreeFind<CR>
+	endif
+
+	" Tagbar Settings
+	if IsPluginInstalled('majutsushi/tagbar')
+		noremap <Leader>ol :TagbarToggle<CR>
+	endif
+
+	" Scratch Setting
+	if IsPluginInstalled('mtth/scratch.vim')
+		let g:scratch_autohide = 0
+	endif
+
+	" Solarized color theme
+	if IsPluginInstalled('altercation/vim-colors-solarized')
+		if $TERM != 'rxvt-256color' && ! has('gui_running')
+			let g:solarized_termcolors=256   " Use degraded 256 color schema
+			set t_Co=256
+		endif
+		if $TERM == 'rxvt-256color'
+			let g:solarized_termtrans=1      " Transparant background
+		endif
+		let g:solarized_hitrail=1          " Hilight trailing white space
+		set background=dark                " Configure solarized[dark|light]
+		syntax enable                      " Enable syntax highlighting
+		colorscheme solarized              " Activate solarized color scheme
+	endif
+
+	" Setup Neocomplete for Cpp with vim-rtags
+	if IsPluginInstalled('lyuts/vim-rtags') && IsPluginInstalled('Shougo/neocomplete.vim')
+		function! SetupNeocomleteForCppWithRtags()
+			setlocal omnifunc=RtagsCompleteFunc
+			if !exists('g:neocomplete#sources#omni#input_patterns')
+				let g:neocomplete#sources#omni#input_patterns = {}
+			endif
+			let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+			let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
+			set completeopt+=longest,menuone
+		endfunction
+		autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
+	endif
+
+	" Setup neocomplete
+	if IsPluginInstalled('Shougo/neocomplete.vim')
+		let g:acp_enableAtStartup = 0
+		let g:neocomplete#enable_at_startup = 1
+		let g:neocomplete#enable_smart_case = 1
+		let g:neocomplete#sources#syntax#min_keyword_length = 3
+		let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+		let g:neocomplete#sources#dictionary#dictionaries = {
+			\ 'default' : '',
+			\ 'vimshell' : $HOME.'/.vimshell_hist',
+			\ 'scheme' : $HOME.'/.gosh_completions'
+		\ }
+		if !exists('g:neocomplete#keyword_patterns')
+			let g:neocomplete#keyword_patterns = {}
+		endif
+		let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+		inoremap <expr><C-g>     neocomplete#undo_completion()
+		inoremap <expr><C-l>     neocomplete#complete_common_string()
+		inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+		function! s:my_cr_function()
+			return pumvisible() ? "\<C-y>" : "\<CR>"
+		endfunction
+		inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+		inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+		inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+		if !exists('g:neocomplete#sources#omni#input_patterns')
+			let g:neocomplete#sources#omni#input_patterns = {}
+		endif
+	endif
+endif
+" }}}
 " General Key Mappings, Settings and Functions "{{{
 "
 " Change the local working directory to that of the current buffer
@@ -122,122 +250,6 @@ if !exists(':DiffOrig')
 	 \ | wincmd p | diffthis
 endif
 
-" }}}
-" Plugin Settings "{{{
-"
-
-" Only configure plugins if vundle is installed
-if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
-	" =========================== Vundle Config ================================
-	set nocompatible                   " be iMproved, required
-	filetype off                       " required
-	set rtp+=~/.vim/bundle/Vundle.vim  " set the runtime path to include Vundle
-	call vundle#begin()                " initialize Vundle
-	" =========================== Activate Plugins below =======================
-	Plugin 'gmarik/Vundle.vim'         " let Vundle manage Vundle, required
-	Plugin 'tpope/vim-fugitive'
-	Plugin 'altercation/vim-colors-solarized'
-	Plugin 'mtth/scratch.vim'
-	Plugin 'scrooloose/nerdtree'
-	Plugin 'lyuts/vim-rtags'
-	Plugin 'Shougo/neocomplete.vim'
-
-	if v:version > 700
-		Plugin 'Shougo/vimshell.vim'
-		Plugin 'Shougo/vimproc.vim'
-		Plugin 'scrooloose/nerdcommenter'
-		if isdirectory(glob("~/.vim/bundle/tagbar"))
-			noremap <Leader>nt :NERDTreeToggle<CR>
-			noremap <Leader>nc :NERDTreeClose<CR>
-			noremap <Leader>nf :NERDTreeFind<CR>
-		endif
-	endif
-	if v:version > 701
-		Plugin 'majutsushi/tagbar'
-		if isdirectory(glob("~/.vim/bundle/tagbar"))
-			noremap <Leader>ol :TagbarToggle<CR>
-		endif
-	endif
-	if v:version > 702
-		Plugin 'Chiel92/vim-autoformat'
-		if isdirectory(glob("~/.vim/bundle/vim-autoformat"))
-			noremap <Leader>af :Autoformat<CR>
-		endif
-	endif
-	" =========================== Finish Vundle Config ========================
-	call vundle#end()                  " required
-	filetype plugin indent on          " required
-	" To ignore plugin indent changes, instead use:
-	" filetype plugin on
-	" =========================== Plugin Settings ==============================
-
-	if isdirectory(glob("~/.vim/bundle/vim-rtags")) && isdirectory(glob("~/.vim/bundle/neocomplete.vim"))
-		function! SetupNeocomleteForCppWithRtags()
-			setlocal omnifunc=RtagsCompleteFunc
-			if !exists('g:neocomplete#sources#omni#input_patterns')
-				let g:neocomplete#sources#omni#input_patterns = {}
-			endif
-			let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-			let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
-			set completeopt+=longest,menuone
-		endfunction
-		autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
-	endif
-
-	if isdirectory(glob("~/.vim/bundle/neocomplete.vim"))
-		let g:acp_enableAtStartup = 0
-		let g:neocomplete#enable_at_startup = 1
-		let g:neocomplete#enable_smart_case = 1
-		let g:neocomplete#sources#syntax#min_keyword_length = 3
-		let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-		let g:neocomplete#sources#dictionary#dictionaries = {
-			\ 'default' : '',
-			\ 'vimshell' : $HOME.'/.vimshell_hist',
-			\ 'scheme' : $HOME.'/.gosh_completions'
-		\ }
-		if !exists('g:neocomplete#keyword_patterns')
-			let g:neocomplete#keyword_patterns = {}
-		endif
-		let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-		inoremap <expr><C-g>     neocomplete#undo_completion()
-		inoremap <expr><C-l>     neocomplete#complete_common_string()
-		inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-		function! s:my_cr_function()
-			return pumvisible() ? "\<C-y>" : "\<CR>"
-		endfunction
-		inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-		inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-		inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-		if !exists('g:neocomplete#sources#omni#input_patterns')
-			let g:neocomplete#sources#omni#input_patterns = {}
-		endif
-	endif
-
-	" Scratch plugin setting
-	if isdirectory(glob("~/.vim/bundle/scratch.vim"))
-		let g:scratch_autohide = 0
-	endif
-
-	" Solarized color theme
-	if isdirectory(glob("~/.vim/bundle/vim-colors-solarized"))
-		if $TERM != 'rxvt-256color' && ! has('gui_running')
-			let g:solarized_termcolors=256   " Use degraded 256 color schema
-			set t_Co=256
-		endif
-		if $TERM == 'rxvt-256color'
-			let g:solarized_termtrans=1      " Transparant background
-		endif
-		let g:solarized_hitrail=1          " Hilight trailing white space
-		set background=dark                " Configure solarized[dark|light]
-		syntax enable                      " Enable syntax highlighting
-		colorscheme solarized              " Activate solarized color scheme
-	endif
-endif
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0:ts=2:noet
