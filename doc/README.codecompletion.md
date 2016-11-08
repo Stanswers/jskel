@@ -44,3 +44,4 @@ See [Bear](https://github.com/rizsotto/Bear) for more information.
 vim-rtags and neocomplete are configured in the vimrc file.  The plugins are
 managed by Vundle and can be installed by executing :PluginInstall.
 
+See [vim-rtags](https://github.com/lyuts/vim-rtags) and [neocomplete](https://github.com/Shougo/neocomplete.vim) for more information.
