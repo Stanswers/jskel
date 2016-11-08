@@ -23,6 +23,7 @@ cp <jskel>/config/systemd/user/rdm.* ~/.config/systemd/user/
 systemctl --user enable rdm.socket
 systemctl --user start rdm.socket
 ```
+See [rtags](https://github.com/Andersbakken/rtags) for more information.
 
 ## Clone and Install Bear
 
@@ -35,6 +36,8 @@ cmake ../
 make
 sudo make install
 ```
+
+See [Bear](https://github.com/rizsotto/Bear) for more information.
 
 ## VIM Plugins (vim-rtags and neocomplete)
 
