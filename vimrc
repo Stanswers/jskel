@@ -164,6 +164,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 			return pumvisible() ? "\<C-y>" : "\<CR>"
 		endfunction
 		inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+		inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
 		inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 		inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS

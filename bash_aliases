@@ -143,9 +143,6 @@ fi
 if command -v python &> /dev/null; then
   alias httpserv='python -m SimpleHTTPServer'
 fi
-if [ -f "${HOME}/scripts/gwdb.sh" ]; then
-  alias gwdb='${HOME}/scripts/gwdb.sh'
-fi
 alias killall='killall -u ${USER}'
 alias du='du -h'
 alias df='df -h'
