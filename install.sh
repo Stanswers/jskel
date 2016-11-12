@@ -158,8 +158,8 @@ main() {
       vim) actions[vim]=${targets[vim]}; shift;;
       x11) actions[x11]=${targets[x11]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
-      diff) diffFiles ${files[@]}; return 0;;
-      vimdiff) vimdiffFiles ${files[@]}; return 0;;
+      diff | d) diffFiles ${files[@]}; return 0;;
+      vimdiff | vd) vimdiffFiles ${files[@]}; return 0;;
       -h) printHelp; return 0;;
       --help) printHelp; return 0;;
       --* | -*)
