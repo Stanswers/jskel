@@ -39,6 +39,25 @@ diffFiles() {
   done
 }
 
+vimdiffFiles() {
+  local files=()
+  for f in "${@}"; do
+    if [ -e "${HOME}/.${f}" ] && ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
+      files+=("${f}")
+    fi
+  done
+  local index=0
+  for f in "${files[@]}"; do
+    ((index++))
+    printf "\nViewing (%d/%d): '%s'\n" ${index} ${#files[@]} "${f}"
+    read -p "Launch 'vimdiff' [Y/n]: " -e answer
+    answer=${answer:-"Y"}
+    case ${answer} in
+      [Yy]*) vimdiff "${f}" "${HOME}/.${f}";;
+    esac
+  done
+}
+
 copyFiles() {
   printf "Installing:\n"
   for f in "${@}"; do
@@ -140,6 +159,7 @@ main() {
       x11) actions[x11]=${targets[x11]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
       diff) diffFiles ${files[@]}; return 0;;
+      vimdiff) vimdiffFiles ${files[@]}; return 0;;
       -h) printHelp; return 0;;
       --help) printHelp; return 0;;
       --* | -*)
