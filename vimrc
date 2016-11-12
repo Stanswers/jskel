@@ -214,6 +214,11 @@ if exists('+colorcolumn')
 	set colorcolumn=80
 endif
 
+" Enable enhanced command-line completion
+set wildmenu
+" Complete longest common string => lists alternatives => each full match
+set wildmode=longest,list,full
+
 " Allow modified buffers to be hidden
 set hidden
 
