@@ -67,6 +67,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'scrooloose/nerdtree'
 	Plugin 'lyuts/vim-rtags'
 	Plugin 'Shougo/neocomplete.vim'
+	Plugin 'davidhalter/jedi-vim'
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -127,20 +128,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 		colorscheme solarized              " Activate solarized color scheme
 	endif
 
-	" Setup Neocomplete for Cpp with vim-rtags
-	if IsPluginInstalled('lyuts/vim-rtags') && IsPluginInstalled('Shougo/neocomplete.vim')
-		function! SetupNeocomleteForCppWithRtags()
-			setlocal omnifunc=RtagsCompleteFunc
-			if !exists('g:neocomplete#sources#omni#input_patterns')
-				let g:neocomplete#sources#omni#input_patterns = {}
-			endif
-			let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-			let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
-			set completeopt+=longest,menuone
-		endfunction
-		autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
-	endif
-
 	" Setup neocomplete
 	if IsPluginInstalled('Shougo/neocomplete.vim')
 		let g:acp_enableAtStartup = 0
@@ -170,10 +157,36 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 		if !exists('g:neocomplete#sources#omni#input_patterns')
 			let g:neocomplete#sources#omni#input_patterns = {}
+		endif
+		" Setup jedi with neocomplete
+		if IsPluginInstalled('davidhalter/jedi-vim')
+			if !exists('g:neocomplete#force_omni_input_patterns')
+				let g:neocomplete#force_omni_input_patterns = {}
+			endif
+			autocmd FileType python setlocal omnifunc=jedi#completions
+			let g:jedi#completions_enabled = 0
+			let g:jedi#auto_vim_configuration = 0
+			let g:jedi#smart_auto_mappings = 0
+			let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+			" alternative pattern: '\h\w*\|[^. \t]\.\w*'
+		else
+			autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+		endif
+		" Setup Neocomplete for Cpp with vim-rtags
+		if IsPluginInstalled('lyuts/vim-rtags')
+			function! SetupNeocomleteForCppWithRtags()
+				setlocal omnifunc=RtagsCompleteFunc
+				if !exists('g:neocomplete#sources#omni#input_patterns')
+					let g:neocomplete#sources#omni#input_patterns = {}
+				endif
+				let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+				let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
+				set completeopt+=longest,menuone
+			endfunction
+			autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
 		endif
 	endif
 endif
