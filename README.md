@@ -12,6 +12,12 @@ Fitness for anyone else is purely coincidental.
 make install
 ```
 
+or use `install.sh`
+
+```bash
+./install.sh
+```
+
 Overwritten files will be backed up as <filename>~YYMMDDHHmmSS
 
 ## Further Reading
@@ -21,4 +27,5 @@ Overwritten files will be backed up as <filename>~YYMMDDHHmmSS
 2. [Grub](doc/README.grub.md)
 3. [VirtualBox](doc/README.virtualbox.md)
 4. [Code Completion](doc/README.codecompletion.md)
-5. [License](LICENSE.md)
+5. [Fedora Logon Screen](doc/README.fedora.logonscreen.md)
+6. [License](LICENSE.md)

@@ -132,9 +132,10 @@ printHelp() {
   local scriptName=$(basename "${0}")
 cat <<END
 Usage:  ${scriptName} [options] [git] [shell] [vim] [x11]
-        ${scriptName} [options] [diff] [clean]
+        ${scriptName} [options] [diff] [vimdiff] [clean]
 Install jskel git, shell, vim, and x11 files.
 Clean backed up versions of jskel git, shell, vim, and x11 files.
+Diff installed jskel files.
 
 Options:
   -h, --help                Prints this help menu
