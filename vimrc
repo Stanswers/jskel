@@ -195,12 +195,17 @@ endif
 "
 " Change the local working directory to that of the current buffer
 noremap <Leader>cd :lcd %:p:h<CR>
+
 " Remove trailing white space
 noremap <Leader>rts :%s/\s\+$//e \| :noh<CR>
 noremap <Leader>rt :s/\s\+$//e \| :noh<CR>
 
+" Enable mouse in terminal for all modes
+set mouse=a
+
 " Set display characters for list
 set listchars=trail:~,tab:»·,eol:▼
+
 " space was add in version 7.4.710
 if has("patch-7.4.710")
 	set listchars+=space:·
