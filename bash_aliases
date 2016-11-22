@@ -118,6 +118,10 @@ if command -v curl &> /dev/null && command -v xmlstarlet &> /dev/null; then
   }
 fi
 
+if [ -n $DISPLAY ] && command -v vimx &> /dev/null; then
+  alias vi='vimx'
+  alias vim='vimx'
+fi
 if command -v htop &> /dev/null; then
   alias top='htop'
 fi

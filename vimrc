@@ -200,8 +200,10 @@ noremap <Leader>cd :lcd %:p:h<CR>
 noremap <Leader>rts :%s/\s\+$//e \| :noh<CR>
 noremap <Leader>rt :s/\s\+$//e \| :noh<CR>
 
-" Enable mouse in terminal for all modes
-set mouse=a
+" Enable mouse in terminal for all modes if clipboard is enabled
+if has("clipboard")
+	set mouse=a
+endif
 
 " Set display characters for list
 set listchars=trail:~,tab:»·,eol:▼
