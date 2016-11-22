@@ -80,21 +80,12 @@ _up() {
 }
 complete -o nospace -F _up up
 
-if type _cdpath &> /dev/null && type cdpath &> /dev/null; then
+if type _makecdpath &> /dev/null; then
   if [ -d ${HOME}/workspace ]; then
-    _ws() {
-      _cdpath "${HOME}/workspace"
-    }
-    complete -o nospace -F _ws ws
-    alias ws='cdpath ${HOME}/workspace'
+    _makecdpath ws "${HOME}/workspace"
   fi
-
   if [ -d ${HOME}/src ]; then
-    _src() {
-      _cdpath "${HOME}/src"
-    }
-    complete -o nospace -F _ws ws
-    alias src='cdpath ${HOME}/src'
+    _makecdpath src "${HOME}/src"
   fi
 fi
 

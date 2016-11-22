@@ -26,6 +26,12 @@ case "$(uname -s)" in
 esac
 
 if [ "$PS1" ]; then
+  _makecdpath() {
+    eval "_${1}() { _cdpath ${2}; }"
+    complete -o nospace -F _${1} ${1}
+    alias ${1}="cdpath ${2}"
+  }
+
   cdpath() {
     cd "${1}/${2}"
   }
@@ -73,3 +79,5 @@ fi
 
 # added by travis gem
 [ -f ${HOME}/.travis/travis.sh ] && source ${HOME}/.travis/travis.sh
+
+type _makecdpath &> /dev/null && unset -f _makecdpath
