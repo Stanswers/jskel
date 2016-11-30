@@ -51,7 +51,11 @@ if [ "$PS1" ]; then
 
   export PAGER=/usr/bin/less
   export SYSTEMD_PAGER=/usr/bin/less
-  export EDITOR=/usr/bin/vim
+  if [ -n $DISPLAY ] && command -v vimx &> /dev/null; then
+    export EDITOR=/usr/bin/vimx
+  else
+    export EDITOR=/usr/bin/vim
+  fi
   export SVN_MERGE='vim -d'
   export PROMPT_COMMAND='last=$?;history -a;printf "\e]0;${HOSTNAME} $(date +%H:%M:%S) ${PWD}:${last}\007"'
   export PS1='[\u@\h:\w] '
