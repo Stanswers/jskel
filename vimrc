@@ -250,6 +250,10 @@ set ttyfast
 " tabs=2
 set tabstop=2 shiftwidth=2
 
+if !empty($TB_TRUNK)
+	autocmd BufRead $TB_TRUNK/* setlocal makeprg=tbmake\ TESTS=NO
+endif
+
 " tabs=4
 autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4 shiftwidth=4
 
