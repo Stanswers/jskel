@@ -40,7 +40,6 @@
 
 [core]
 	pager = less
-	editor = vim
 	excludesfile = /home/justinh/.gitignore_global
 
 [color]
