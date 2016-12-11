@@ -68,6 +68,8 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'lyuts/vim-rtags'
 	Plugin 'Shougo/neocomplete.vim'
 	Plugin 'davidhalter/jedi-vim'
+	Plugin 'vim-airline/vim-airline'
+	Plugin 'vim-airline/vim-airline-themes'
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -90,6 +92,25 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	function! IsPluginInstalled(name)
 		return index(g:my#bundles, a:name) > -1
 	endfunction
+
+	if IsPluginInstalled('vim-airline/vim-airline')
+		let g:airline#extensions#tabline#enabled = 1
+		if g:airline#extensions#tabline#enabled != 0
+			let g:airline#extensions#tabline#buffer_idx_mode = 1
+			nmap <leader>1 <Plug>AirlineSelectTab1
+			nmap <leader>2 <Plug>AirlineSelectTab2
+			nmap <leader>3 <Plug>AirlineSelectTab3
+			nmap <leader>4 <Plug>AirlineSelectTab4
+			nmap <leader>5 <Plug>AirlineSelectTab5
+			nmap <leader>6 <Plug>AirlineSelectTab6
+			nmap <leader>7 <Plug>AirlineSelectTab7
+			nmap <leader>8 <Plug>AirlineSelectTab8
+			nmap <leader>9 <Plug>AirlineSelectTab9
+			nmap <leader>- <Plug>AirlineSelectPrevTab
+			nmap <leader>= <Plug>AirlineSelectNextTab
+			nmap <leader>+ <Plug>AirlineSelectNextTab
+		endif
+	endif
 
 	"Autoformat settings
 	if IsPluginInstalled('Chiel92/vim-autoformat')
@@ -136,10 +157,10 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 		let g:neocomplete#sources#syntax#min_keyword_length = 3
 		let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 		let g:neocomplete#sources#dictionary#dictionaries = {
-			\ 'default' : '',
-			\ 'vimshell' : $HOME.'/.vimshell_hist',
-			\ 'scheme' : $HOME.'/.gosh_completions'
-		\ }
+					\ 'default' : '',
+					\ 'vimshell' : $HOME.'/.vimshell_hist',
+					\ 'scheme' : $HOME.'/.gosh_completions'
+					\ }
 		if !exists('g:neocomplete#keyword_patterns')
 			let g:neocomplete#keyword_patterns = {}
 		endif
@@ -268,14 +289,14 @@ autocmd FileType gitcommit setlocal spell
 
 " Trim trailing white space when writing
 "autocmd FileType python,make,c,cpp,java,php,xml,html,sh,vim
-  "\ autocmd BufWritePre <buffer> if ! &diff | :%s/\s\+$//e | endif
+"\ autocmd BufWritePre <buffer> if ! &diff | :%s/\s\+$//e | endif
 
 " Use ":DiffOrig" to see the differences
 " between the current buffer and the file it was loaded from.
 " see ":help DiffOrig"
 if !exists(':DiffOrig')
 	command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-	 \ | wincmd p | diffthis
+				\ | wincmd p | diffthis
 endif
 
 " }}}
