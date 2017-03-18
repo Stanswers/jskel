@@ -9,7 +9,7 @@ man() {
       LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
       LESS_TERMCAP_ue="$(printf "\e[0m")" \
       LESS_TERMCAP_us="$(printf "\e[1;32m")" \
-      man "$@"
+      man "${@}"
 }
 
 installSshKey() {
@@ -17,17 +17,17 @@ installSshKey() {
 }
 
 installJaxpProperties() {
-  if [ -d $JAVA_HOME/jre/lib ] && [ ! -f $JAVA_HOME/jre/lib/jaxp.properties ]; then
-    sudo sh -c "echo 'javax.xml.accessExternalSchema = all' > $JAVA_HOME/jre/lib/jaxp.properties"
+  if [ -d "${JAVA_HOME}/jre/lib" ] && [ ! -f "${JAVA_HOME}/jre/lib/jaxp.properties" ]; then
+    sudo sh -c "echo 'javax.xml.accessExternalSchema = all' > ${JAVA_HOME}/jre/lib/jaxp.properties"
   fi
 }
 
 lsop() {
     local args=("-nP")
-    case "$1" in
-        [0-9]*) args+=("-iTCP:$1");;
-        -l) args+=("-sTCP:LISTEN" "-iTCP:$2");;
-        -u) args+=("-iUDP:$2");;
+    case "${1}" in
+        [0-9]*) args+=("-iTCP:${1}");;
+        -l) args+=("-sTCP:LISTEN" "-iTCP:${2}");;
+        -u) args+=("-iUDP:${2}");;
         *)
             echo "Usage: ${FUNCNAME[0]} [-i -l] port" >&2
             return 1
@@ -80,16 +80,54 @@ _up() {
 }
 complete -o nospace -F _up up
 
-if type _makecdpath &> /dev/null; then
-  if [ -d ${HOME}/workspace ]; then
-    _makecdpath ws "${HOME}/workspace"
-  fi
-  if [ -d ${HOME}/src ]; then
-    _makecdpath src "${HOME}/src"
-  fi
+cdpath() {
+  cd "${1}/${2}"
+}
+
+_makecdpath() {
+  eval "_${1}() { _cdpath ${2}; }"
+  complete -o nospace -F _${1} ${1}
+  alias ${1}="cdpath ${2}"
+}
+
+_cdpath() {
+  local cur path len dirs
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  path="${1}"
+  len=$((${#path} + 1))
+  for d in "${path}/${cur}"*; do
+    if [ -d "${d}" ] && [[ "${d}" != */target* ]]; then
+      dirs+="${d:$len}/ "
+    fi
+  done
+  COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
+}
+
+if [ -d "${HOME}/workspace" ]; then
+  _makecdpath ws "${HOME}/workspace"
 fi
 
-if [ -f ${HOME}/.sshrc ]; then
+if [ -d "${HOME}/src" ]; then
+  _makecdpath src "${HOME}/src"
+fi
+
+if [ -d "${HOME}/workspace/maven-projects/gateways" ]; then
+  _makecdpath gw "${HOME}/workspace/maven-projects/gateways"
+fi
+
+if [ -d "${HOME}/workspace/maven-projects" ]; then
+  _makecdpath mp "${HOME}/workspace/maven-projects"
+fi
+
+if [ -d "${HOME}/src/tbdev" ] && type _makecdpath &> /dev/null; then
+  _makecdpath tbdev "${HOME}/src/tbdev"
+fi
+
+if [ -d "${HOME}/src/tb" ] && type _makecdpath &> /dev/null; then
+  _makecdpath tb "${HOME}/src/tb"
+fi
+
+if [ -f "${HOME}/.sshrc" ]; then
   sshenv() {
     local sshrc="$(cat ${HOME}/.sshrc)"
     # Note that, unescaped "echo \"${SSHRC}\", this expands on the client side.
@@ -109,9 +147,13 @@ if command -v curl &> /dev/null && command -v xmlstarlet &> /dev/null; then
   }
 fi
 
-if [ -n $DISPLAY ] && command -v vimx &> /dev/null; then
+if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
   alias vi='vimx'
   alias vim='vimx'
+fi
+if command -v tbcomponent &> /dev/null; then
+  alias lsgw='tbcomponent ls | grep -vP "^ +${TBRICKS_SYSTEM%_sys}.*"'
+  alias lscore='tbcomponent ls ${TBRICKS_SYSTEM%_sys}\*'
 fi
 if command -v htop &> /dev/null; then
   alias top='htop'

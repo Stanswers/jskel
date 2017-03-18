@@ -25,30 +25,29 @@ case "$(uname -s)" in
     ;;
 esac
 
-if [ "$PS1" ]; then
-  _makecdpath() {
-    eval "_${1}() { _cdpath ${2}; }"
-    complete -o nospace -F _${1} ${1}
-    alias ${1}="cdpath ${2}"
+if [ -n "${PS1}" ]; then
+  jhdevsys() {
+    export TBRICKS_SYSTEM=jh_dev_sys
+    export SYSTEM=jh_dev_sys
+    remove_from_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
+                     "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
+    append_to_path "${HOME}/src/tbdev/toolchain/x86_64-unknown-linux/bin" \
+                   "${HOME}/src/tbdev/build.x86_64-unknown-linux/bin"
   }
 
-  cdpath() {
-    cd "${1}/${2}"
+  jhsys() {
+    export TBRICKS_SYSTEM=jh_sys
+    export SYSTEM=jh_sys
+    remove_from_path "${HOME}/src/tbdev/toolchain/x86_64-unknown-linux/bin" \
+                     "${HOME}/src/tbdev/build.x86_64-unknown-linux/bin"
+    append_to_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
+                   "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
   }
-
-  _cdpath() {
-    local cur path len dirs
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    path="${1}"
-    len=$((${#path} + 1))
-    for d in "${path}/${cur}"*; do
-      if [ -d "${d}" ] && [[ "${d}" != */target* ]]; then
-        dirs+="${d:$len}/ "
-      fi
-    done
-    COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
-  }
-
+  jhdevsys
+  export TBRICKS_ADMIN_CENTER=jh_admin_sys
+  export TBRICKS_USER=justinh
+  export TBRICKS_TBLOG_SNAPSHOT_SIZE=60000
+  export TBRICKS_ETC=/etc/tbricks
   export PAGER=/usr/bin/less
   export SYSTEMD_PAGER=/usr/bin/less
   if [ -n $DISPLAY ] && command -v vimx &> /dev/null; then
@@ -66,6 +65,7 @@ if [ "$PS1" ]; then
   [ -f ${HOME}/.bash_completion.maven ] && source ${HOME}/.bash_completion.maven
   # Source aliases
   [ -f ${HOME}/.bash_aliases ] && source ${HOME}/.bash_aliases
+  [ -f /opt/tbricks/admin/etc/bash/.tbricks_completion.bash ] && source /opt/tbricks/admin/etc/bash/.tbricks_completion.bash
   # append to the history file, don't overwrite it
   shopt -s histappend
   # Combine multiline commands into one in history
@@ -73,13 +73,6 @@ if [ "$PS1" ]; then
   # enable XON/XOFF flow control
   stty -ixon
 fi
-
-
-# Source orc bashrc
-[ -f ${HOME}/.bashrc.orc ] && source ${HOME}/.bashrc.orc
-
-# Source TBricks bashrc
-[ -f ${HOME}/.bashrc.tbricks ] && source ${HOME}/.bashrc.tbricks
 
 # added by travis gem
 [ -f ${HOME}/.travis/travis.sh ] && source ${HOME}/.travis/travis.sh

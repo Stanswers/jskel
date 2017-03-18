@@ -94,7 +94,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	endfunction
 
 	if IsPluginInstalled('vim-airline/vim-airline')
-		let g:airline#extensions#tabline#enabled = 1
+		let g:airline#extensions#tabline#enabled = 0
 		if g:airline#extensions#tabline#enabled != 0
 			let g:airline#extensions#tabline#buffer_idx_mode = 1
 			nmap <leader>1 <Plug>AirlineSelectTab1
