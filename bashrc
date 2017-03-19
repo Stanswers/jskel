@@ -26,6 +26,21 @@ case "$(uname -s)" in
 esac
 
 if [ -n "${PS1}" ]; then
+  append_to_path() {
+    for p in ${@}; do
+      case ":${PATH}:" in
+        *:"${p}":*) ;;
+        *) PATH=${PATH}:${p} ;;
+      esac
+    done
+    export PATH
+  }
+  remove_from_path() {
+    for p in ${@}; do
+      PATH=$(echo -n ${PATH} | sed "s;:\?${p};;")
+    done
+    export PATH
+  }
   jhdevsys() {
     export TBRICKS_SYSTEM=jh_dev_sys
     export SYSTEM=jh_dev_sys
@@ -42,6 +57,8 @@ if [ -n "${PS1}" ]; then
     append_to_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
                    "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
   }
+  unset -f append_to_path
+  unset -f remove_from_path
   jhdevsys
   export TBRICKS_ADMIN_CENTER=jh_admin_sys
   export TBRICKS_USER=justinh
