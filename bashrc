@@ -57,8 +57,6 @@ if [ -n "${PS1}" ]; then
     append_to_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
                    "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
   }
-  unset -f append_to_path
-  unset -f remove_from_path
   jhdevsys
   export TBRICKS_ADMIN_CENTER=jh_admin_sys
   export TBRICKS_USER=justinh
