@@ -12,11 +12,11 @@ case "$(uname -s)" in
   CYGWIN*|MINGW32*|MSYS*)
     # let windows set the JAVA_HOME and M2_REPO environment variables
     # Cygwin doesn't do evaluate dircolors :(
-    [ -f ${HOME}/.dircolors ] && eval "$(dircolors -b ${HOME}/.dircolors)"
+    [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b ${HOME}/.dircolors)"
     alias ls='ls --color=auto'
     ;;
   *)
-    if command -v mvn &> /dev/null && [ -d ${HOME}/.m2/repository ]; then
+    if command -v mvn &> /dev/null && [ -d "${HOME}/.m2/repository" ]; then
       export M2_REPO=${HOME}/.m2/repository
     fi
     if command -v javac &> /dev/null; then
@@ -34,7 +34,6 @@ if [ -n "${PS1}" ]; then
     append_to_path "${HOME}/src/tbdev/toolchain/x86_64-unknown-linux/bin" \
                    "${HOME}/src/tbdev/build.x86_64-unknown-linux/bin"
   }
-
   jhsys() {
     export TBRICKS_SYSTEM=jh_sys
     export SYSTEM=jh_sys
@@ -50,7 +49,7 @@ if [ -n "${PS1}" ]; then
   export TBRICKS_ETC=/etc/tbricks
   export PAGER=/usr/bin/less
   export SYSTEMD_PAGER=/usr/bin/less
-  if [ -n $DISPLAY ] && command -v vimx &> /dev/null; then
+  if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
     export EDITOR=/usr/bin/vimx
   else
     export EDITOR=/usr/bin/vim
@@ -62,10 +61,10 @@ if [ -n "${PS1}" ]; then
   export HISTFILESIZE=10000
   export HISTSIZE=10000
   # Source completeion scripts
-  [ -f ${HOME}/.bash_completion.maven ] && source ${HOME}/.bash_completion.maven
-  # Source aliases
-  [ -f ${HOME}/.bash_aliases ] && source ${HOME}/.bash_aliases
+  [ -f "${HOME}/.bash_completion.maven" ] && source "${HOME}/.bash_completion.maven"
   [ -f /opt/tbricks/admin/etc/bash/.tbricks_completion.bash ] && source /opt/tbricks/admin/etc/bash/.tbricks_completion.bash
+  # Source aliases
+  [ -f "${HOME}/.bash_aliases" ] && source "${HOME}/.bash_aliases"
   # append to the history file, don't overwrite it
   shopt -s histappend
   # Combine multiline commands into one in history
@@ -75,6 +74,5 @@ if [ -n "${PS1}" ]; then
 fi
 
 # added by travis gem
-[ -f ${HOME}/.travis/travis.sh ] && source ${HOME}/.travis/travis.sh
+[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh"
 
-type _makecdpath &> /dev/null && unset -f _makecdpath

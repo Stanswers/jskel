@@ -18,5 +18,5 @@ remove_from_path() {
 [ -f ${HOME}/.bashrc ] && source ${HOME}/.bashrc
 
 # User specific environment and startup programs
-append_to_path "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" "/opt/tbricks/admin"
+append_to_path "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" "/opt/tbricks/admin/bin"
 

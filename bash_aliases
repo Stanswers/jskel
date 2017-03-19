@@ -84,12 +84,6 @@ cdpath() {
   cd "${1}/${2}"
 }
 
-_makecdpath() {
-  eval "_${1}() { _cdpath ${2}; }"
-  complete -o nospace -F _${1} ${1}
-  alias ${1}="cdpath ${2}"
-}
-
 _cdpath() {
   local cur path len dirs
   cur="${COMP_WORDS[COMP_CWORD]}"
@@ -103,29 +97,23 @@ _cdpath() {
   COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
 }
 
-if [ -d "${HOME}/workspace" ]; then
-  _makecdpath ws "${HOME}/workspace"
-fi
-
-if [ -d "${HOME}/src" ]; then
-  _makecdpath src "${HOME}/src"
-fi
-
-if [ -d "${HOME}/workspace/maven-projects/gateways" ]; then
-  _makecdpath gw "${HOME}/workspace/maven-projects/gateways"
-fi
-
-if [ -d "${HOME}/workspace/maven-projects" ]; then
-  _makecdpath mp "${HOME}/workspace/maven-projects"
-fi
-
-if [ -d "${HOME}/src/tbdev" ] && type _makecdpath &> /dev/null; then
-  _makecdpath tbdev "${HOME}/src/tbdev"
-fi
-
-if [ -d "${HOME}/src/tb" ] && type _makecdpath &> /dev/null; then
-  _makecdpath tb "${HOME}/src/tb"
-fi
+_makecdpath() {
+  local -A paths=( [ws]="${HOME}/workspace" \
+                   [src]="${HOME}/src" \
+                   [gw]="${HOME}/workspace/maven-projects/gateways" \
+                   [mp]="${HOME}/workspace/maven-projects" \
+                   [dev]="${HOME}/src/tbdev" \
+                   [rel]="${HOME}/src/tb" )
+  for p in "${!paths[@]}"; do
+    if [ -d "${paths[${p}]}" ]; then
+      eval "_${p}() { _cdpath ${paths[${p}]}; }"
+      complete -o nospace -F _${p} ${p}
+      alias ${p}="cdpath ${paths[${p}]}"
+    fi
+  done
+}
+_makecdpath
+unset -f _makecdpath
 
 if [ -f "${HOME}/.sshrc" ]; then
   sshenv() {
@@ -180,7 +168,9 @@ fi
 if command -v python &> /dev/null; then
   alias httpserv='python -m SimpleHTTPServer'
 fi
-alias killall='killall -u ${USER}'
+if command -v killall &> /dev/null; then
+  alias killall='killall -u ${USER}'
+fi
 alias du='du -h'
 alias df='df -h'
 alias ls='ls -hl --color=auto'
