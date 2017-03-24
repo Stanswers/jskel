@@ -89,5 +89,5 @@ if [ -n "${PS1}" ]; then
 fi
 
 # added by travis gem
-[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh"
+[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh" || true
 

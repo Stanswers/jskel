@@ -19,6 +19,7 @@
 	ci = commit
 	br = branch -vv
 	co = checkout
+	dc = diff --cached
 	dt = difftool -y -g
 	dtc = difftool -y -g --cached
 	vd = difftool
