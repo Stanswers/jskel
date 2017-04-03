@@ -36,8 +36,9 @@ lsop() {
 }
 
 up() {
-  local search="$( [[ "${1}" ]] && echo "${1}" || echo "." )"
-  local dir="$( dirname "$( pwd )" )"
+  local search dir
+  search="$( [[ "${1}" ]] && echo "${1}" || echo "." )"
+  dir="$( dirname "$( pwd )" )"
   while [ "${dir}" != "/" ]; do
     if [ -d "${dir}/${search}" ]; then
       cd "${dir}/${search}"
@@ -63,10 +64,10 @@ _up() {
 
   # error on leading /, ./ or ../
   local regex="?(.)?(.)/*"
-  if [[ "${cur}" == ${regex} ]]; then
+  if [[ ${regex} == "${cur}" ]]; then
     return 1
   fi
-  local base="$(pwd)/f"
+  base="$(pwd)/f"
   if [ -n "${cur}" ]; then
     base="$(dirname "${base}")"
   fi
@@ -117,7 +118,8 @@ unset -f _makecdpath
 
 if [ -f "${HOME}/.sshrc" ]; then
   sshenv() {
-    local sshrc="$(cat ${HOME}/.sshrc)"
+    local sshrc
+    sshrc="$(cat "${HOME}/.sshrc")"
     # Note that, unescaped "echo \"${SSHRC}\", this expands on the client side.
     # This behavior is desired
     ssh -t "${1}@${2}" "${3}" "${4}" "echo \"${sshrc}\" > /tmp/.sshrc; bash --rcfile /tmp/.sshrc; \rm /tmp/.sshrc &> /dev/null"

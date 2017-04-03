@@ -8,7 +8,7 @@
 for p in "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" "/opt/tbricks/admin/bin"; do
   case ":${PATH}:" in
     *:"${p}":*) ;;
-    *) PATH=${PATH}:${p} ;;
+    *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
   esac
 done
 export PATH

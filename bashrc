@@ -5,14 +5,15 @@
 [ -f /etc/bashrc ] && source /etc/bashrc
 
 if command -v gcc &> /dev/null; then
-  export GNUCC_VER="$(gcc -v &> >(grep -oP 'gcc version \K([0-9]+.[0-9]+.[0-9]+)'))"
+  GNUCC_VER="$(gcc -v &> >(grep -oP 'gcc version \K([0-9]+.[0-9]+.[0-9]+)'))"
+  export GNUCC_VER
 fi
 
 case "$(uname -s)" in
   CYGWIN*|MINGW32*|MSYS*)
     # let windows set the JAVA_HOME and M2_REPO environment variables
     # Cygwin doesn't do evaluate dircolors :(
-    [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b ${HOME}/.dircolors)"
+    [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
     alias ls='ls --color=auto'
     ;;
   *)
@@ -20,48 +21,54 @@ case "$(uname -s)" in
       export M2_REPO=${HOME}/.m2/repository
     fi
     if command -v javac &> /dev/null; then
-      export JAVA_HOME=$(readlink -f $(which javac) | sed "s:/bin/javac::")
+      JAVA_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
+      export JAVA_HOME
     fi
     ;;
 esac
 
 if [ -n "${PS1}" ]; then
   append_to_path() {
-    for p in ${@}; do
+    for p in "${@}"; do
       case ":${PATH}:" in
         *:"${p}":*) ;;
-        *) PATH=${PATH}:${p} ;;
+        *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
       esac
     done
     export PATH
   }
   remove_from_path() {
-    for p in ${@}; do
-      PATH=$(echo -n ${PATH} | sed "s;:\?${p};;")
+    for p in "${@}"; do
+      PATH=:${PATH}:
+      PATH=${PATH//:${p}:/:}
+      PATH=${PATH#:}
+      PATH=${PATH%:}
     done
     export PATH
   }
   jhdevsys() {
     export TBRICKS_SYSTEM=jh_dev_sys
     export SYSTEM=jh_dev_sys
-    remove_from_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
-                     "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
-    append_to_path "${HOME}/src/tbdev/toolchain/x86_64-unknown-linux/bin" \
-                   "${HOME}/src/tbdev/build.x86_64-unknown-linux/bin"
+    remove_from_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
+                     "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
+    export TBRICKS_TRUNK="${HOME}/src/tbdev"
+    append_to_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
+                   "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
   }
   jhsys() {
     export TBRICKS_SYSTEM=jh_sys
     export SYSTEM=jh_sys
-    remove_from_path "${HOME}/src/tbdev/toolchain/x86_64-unknown-linux/bin" \
-                     "${HOME}/src/tbdev/build.x86_64-unknown-linux/bin"
-    append_to_path "${HOME}/src/tb/toolchain/x86_64-unknown-linux/bin" \
-                   "${HOME}/src/tb/build.x86_64-unknown-linux/bin"
+    remove_from_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
+                     "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
+    export TBRICKS_TRUNK="${HOME}/src/tb"
+    append_to_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
+                   "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
   }
   jhdevsys
   export TBRICKS_ADMIN_CENTER=jh_admin_sys
   export TBRICKS_USER=justinh
   export TBRICKS_TBLOG_SNAPSHOT_SIZE=60000
-  export TBRICKS_ETC=/etc/tbricks
+  [ -d /etc/tbricks ] && export TBRICKS_ETC=/etc/tbricks
   export PAGER=/usr/bin/less
   export SYSTEMD_PAGER=/usr/bin/less
   if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
@@ -89,5 +96,6 @@ if [ -n "${PS1}" ]; then
 fi
 
 # added by travis gem
-[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh" || true
+[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh"
+true
 
