@@ -3,6 +3,8 @@
 
 # Source global definitions
 [ -f /etc/bashrc ] && source /etc/bashrc
+[ -f /etc/bash.bashrc ] && source /etc/bash.bashrc
+[ -z "$PS1" ] && return
 
 if command -v gcc &> /dev/null; then
   GNUCC_VER="$(gcc -v &> >(grep -oP 'gcc version \K([0-9]+.[0-9]+.[0-9]+)'))"
@@ -12,9 +14,6 @@ fi
 case "$(uname -s)" in
   CYGWIN*|MINGW32*|MSYS*)
     # let windows set the JAVA_HOME and M2_REPO environment variables
-    # Cygwin doesn't do evaluate dircolors :(
-    [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
-    alias ls='ls --color=auto'
     ;;
   *)
     if command -v mvn &> /dev/null && [ -d "${HOME}/.m2/repository" ]; then
@@ -27,25 +26,27 @@ case "$(uname -s)" in
     ;;
 esac
 
-if [ -n "${PS1}" ]; then
-  append_to_path() {
-    for p in "${@}"; do
-      case ":${PATH}:" in
-        *:"${p}":*) ;;
-        *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
-      esac
+append_to_path() {
+  for p in "${@}"; do
+    case ":${PATH}:" in
+      *:"${p}":*) ;;
+      *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
+    esac
+  done
+  export PATH
+}
+
+remove_from_path() {
+  for p in "${@}"; do
+    PATH=:${PATH}:
+    PATH=${PATH//:${p}:/:}
+    PATH=${PATH#:}
+    PATH=${PATH%:}
     done
-    export PATH
-  }
-  remove_from_path() {
-    for p in "${@}"; do
-      PATH=:${PATH}:
-      PATH=${PATH//:${p}:/:}
-      PATH=${PATH#:}
-      PATH=${PATH%:}
-    done
-    export PATH
-  }
+  export PATH
+}
+
+if [ -d "${HOME}/src/tb" ] || [ -s "${HOME}/src/tbdev" ]; then
   jhdevsys() {
     export TBRICKS_SYSTEM=jh_dev_sys
     export SYSTEM=jh_dev_sys
@@ -55,6 +56,7 @@ if [ -n "${PS1}" ]; then
     append_to_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
                    "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
   }
+
   jhsys() {
     export TBRICKS_SYSTEM=jh_sys
     export SYSTEM=jh_sys
@@ -65,35 +67,40 @@ if [ -n "${PS1}" ]; then
                    "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
   }
   jhdevsys
+fi
+if [ -d /opt/tbricks ]; then
   export TBRICKS_ADMIN_CENTER=jh_admin_sys
   export TBRICKS_USER=justinh
   export TBRICKS_TBLOG_SNAPSHOT_SIZE=60000
-  [ -d /etc/tbricks ] && export TBRICKS_ETC=/etc/tbricks
-  export PAGER=/usr/bin/less
-  export SYSTEMD_PAGER=/usr/bin/less
-  if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
-    export EDITOR=/usr/bin/vimx
-  else
-    export EDITOR=/usr/bin/vim
-  fi
-  export SVN_MERGE='vim -d'
-  export PROMPT_COMMAND='last=$?;history -a;printf "\e]0;${HOSTNAME} $(date +%H:%M:%S) ${PWD}:${last}\007"'
-  export PS1='[\u@\h:\w] '
-  export FIGNORE='.svn:.git:.pyc'
-  export HISTFILESIZE=10000
-  export HISTSIZE=10000
-  # Source completeion scripts
-  [ -f "${HOME}/.bash_completion.maven" ] && source "${HOME}/.bash_completion.maven"
-  [ -f /opt/tbricks/admin/etc/bash/.tbricks_completion.bash ] && source /opt/tbricks/admin/etc/bash/.tbricks_completion.bash
-  # Source aliases
-  [ -f "${HOME}/.bash_aliases" ] && source "${HOME}/.bash_aliases"
-  # append to the history file, don't overwrite it
-  shopt -s histappend
-  # Combine multiline commands into one in history
-  shopt -s cmdhist
-  # enable XON/XOFF flow control
-  stty -ixon
 fi
+[ -d /etc/tbricks ] && export TBRICKS_ETC=/etc/tbricks
+
+export PAGER=/usr/bin/less
+export SYSTEMD_PAGER=/usr/bin/less
+if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
+  export EDITOR=/usr/bin/vimx
+else
+  export EDITOR=/usr/bin/vim
+fi
+export SVN_MERGE='vim -d'
+export PROMPT_COMMAND='last=$?;history -a;printf "\e]0;${HOSTNAME} $(date +%H:%M:%S) ${PWD}:${last}\007"'
+export PS1='[\u@\h:\w] '
+export FIGNORE='.svn:.git:.pyc'
+export HISTFILESIZE=10000
+export HISTSIZE=10000
+# Not everyone does dircolors in the /etc bash scripts so lets just do it here
+[ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
+# Source completeion scripts
+command -v mvn &> /dev/null && [ -f "${HOME}/.bash_completion.maven" ] && source "${HOME}/.bash_completion.maven"
+[ -f /opt/tbricks/admin/etc/bash/.tbricks_completion.bash ] && source /opt/tbricks/admin/etc/bash/.tbricks_completion.bash
+# Source aliases
+[ -f "${HOME}/.bash_aliases" ] && source "${HOME}/.bash_aliases"
+# append to the history file, don't overwrite it
+shopt -s histappend
+# Combine multiline commands into one in history
+shopt -s cmdhist
+# enable XON/XOFF flow control
+stty -ixon
 
 # added by travis gem
 [ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh"
