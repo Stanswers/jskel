@@ -91,7 +91,7 @@ vimInstall() {
   mkd "vim/doc"
   copyFiles "vimrc" "vim/doc/hell.txt" "vim/doc/tags"
   if ! [ -d "${HOME}/.vim/bundle/Vundle.vim" ]; then
-    mkd -p "vim/bundle"
+    mkd "vim/bundle"
     git clone "https://github.com/VundleVim/Vundle.vim.git" \
       "${HOME}/.vim/bundle/Vundle.vim"
   fi

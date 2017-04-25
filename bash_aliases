@@ -137,9 +137,14 @@ if command -v curl &> /dev/null && command -v xmlstarlet &> /dev/null; then
   }
 fi
 
-if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
-  alias vi='vimx'
-  alias vim='vimx'
+if [ -n "${DISPLAY}" ]; then
+  if command -v vimx &> /dev/null; then
+    alias vi='vimx'
+    alias vim='vimx'
+  fi
+  if command -v notify-send &> /dev/null; then
+    alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+  fi
 fi
 if command -v tbcomponent &> /dev/null; then
   alias lsgw='tbcomponent ls | grep -vP "^ +${TBRICKS_SYSTEM%_sys}.*"'
