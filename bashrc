@@ -23,6 +23,18 @@ case "$(uname -s)" in
       JAVA_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
       export JAVA_HOME
     fi
+    if grep -q Microsoft /proc/version &> /dev/null; then
+      umask 022
+    fi
+    if [ -f /etc/debian_version ]; then
+      if ! shopt -oq posix; then
+        if [ -f /usr/share/bash-completion/bash_completion ]; then
+          source /usr/share/bash-completion/bash_completion
+        elif [ -f /etc/bash_completion ]; then
+          source /etc/bash_completion
+        fi
+      fi
+    fi
     ;;
 esac
 
