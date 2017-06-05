@@ -279,6 +279,7 @@ autocmd FileType sh setlocal makeprg=shellcheck\ %
 
 " tabs=4
 autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4 shiftwidth=4
+autocmd FileType python,make setlocal noexpandtab
 
 " text like files: tabs=8
 autocmd FileType markdown,help,text setlocal tabstop=8 shiftwidth=8 textwidth=78
