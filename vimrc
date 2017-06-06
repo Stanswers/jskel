@@ -268,24 +268,30 @@ set laststatus=2
 " Indicates a fast terminal connection
 set ttyfast
 
-" tabs=2
-set tabstop=2 shiftwidth=2
-
 if !empty($TBRICKS_TRUNK)
 	autocmd BufRead $TBRICKS_TRUNK/* setlocal makeprg=tbmake\ TESTS=NO
 endif
 
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
-" tabs=4
-autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4 shiftwidth=4
-autocmd FileType python,make setlocal noexpandtab
+" tabsstop = shiftwidth = softtabstop
+set tabstop=2 shiftwidth=0 softtabstop=-1
 
-" text like files: tabs=8
-autocmd FileType markdown,help,text setlocal tabstop=8 shiftwidth=8 textwidth=78
+" tabs=2
+autocmd FileType html,xhtml,xml,xslt,xsd,css setlocal tabstop=2
+
+" tabs=4
+autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4
+
+" tabs=8
+autocmd FileType markdown,help,text,make setlocal tabstop=8
+
+" text like files: set text width
+autocmd FileType markdown,help,text setlocal textwidth=78
 
 " tabs->spaces
-autocmd FileType c,cpp,sh,xml,html,java,perl setlocal expandtab
+autocmd FileType c,cpp,sh,xml,html,java,perl,python setlocal expandtab
+autocmd FileType make setlocal noexpandtab
 
 " turn on spell check
 autocmd FileType gitcommit setlocal spell
