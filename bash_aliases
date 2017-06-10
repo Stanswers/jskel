@@ -144,6 +144,7 @@ if [ -n "${DISPLAY}" ]; then
   fi
   if command -v notify-send &> /dev/null; then
     alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo face-laugh || echo face-angry)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\{0,2\}\s*alert$//'\'')"'
+    #alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\{0,2\}\s*alert$//'\'')"'
   fi
 fi
 if command -v tbcomponent &> /dev/null; then
