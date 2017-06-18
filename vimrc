@@ -48,6 +48,12 @@
 "   3) Execute :PluginInstall
 "   References: https://github.com/Chiel92/vim-autoformat
 "
+"  VimGo:
+"   1) Setup GOPATH and PATH for go development
+"   2) install necessary binaries (such as gocode, godef, goimports, etc.)
+"          :GoInstallBinaries
+"   References: help: vim-go
+"               https://github.com/fatih/vim-go
 " }}}
 " Plugin Settings "{{{
 "
@@ -70,6 +76,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'davidhalter/jedi-vim'
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
+	Plugin 'fatih/vim-go'
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -275,13 +282,13 @@ endif
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
 " tabsstop = shiftwidth = softtabstop
-set tabstop=2 shiftwidth=0 softtabstop=-1
+set tabstop=4 shiftwidth=0 softtabstop=-1
 
 " tabs=2
 autocmd FileType html,xhtml,xml,xslt,xsd,css setlocal tabstop=2
 
 " tabs=4
-autocmd FileType python,make,gitconfig,c,cpp setlocal tabstop=4
+autocmd FileType sh,go,python,make,gitconfig,c,cpp setlocal tabstop=4
 
 " tabs=8
 autocmd FileType markdown,help,text,make setlocal tabstop=8
@@ -291,7 +298,9 @@ autocmd FileType markdown,help,text setlocal textwidth=78
 
 " tabs->spaces
 autocmd FileType c,cpp,sh,xml,html,java,perl,python setlocal expandtab
-autocmd FileType make setlocal noexpandtab
+
+" tabs
+autocmd FileType go,make setlocal noexpandtab
 
 " turn on spell check
 autocmd FileType gitcommit setlocal spell
