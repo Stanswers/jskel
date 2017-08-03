@@ -276,7 +276,7 @@ set laststatus=2
 set ttyfast
 
 if !empty($TBRICKS_TRUNK)
-	autocmd BufRead $TBRICKS_TRUNK/* setlocal makeprg=tbmake\ TESTS=NO
+	autocmd BufRead $TBRICKS_TRUNK/* setlocal makeprg=tbmake\ -sj\ TESTS=NO
 endif
 
 autocmd FileType sh setlocal makeprg=shellcheck\ %

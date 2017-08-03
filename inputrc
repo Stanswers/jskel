@@ -36,3 +36,15 @@ set completion-query-items 500
 
 # Disable audio bell
 set bell-style none
+
+# display possible completions using LS_COLORS to indicate their file type
+set colored-stats on
+
+# common prefixes longer than this value are replaced with an ellipsis when displaying possible completions
+set completion-prefix-display-length 3
+
+# completed names which are symbolic links to directories have a slash appended
+set mark-symlinked-directories on
+
+# a character denoting a file’s type is appended to the filename when listing possible completions
+set visible-stats on
