@@ -194,5 +194,6 @@ alias rmhtml='sed '\''s/<[^>]\+>/ /g'\'' '
 alias pss='ps -ef | grep --color -v grep | sed '\''s/ -cp [-./_:0-9A-Za-z]*//g'\''  | grep --color -i '
 alias colors='for x in {0..8} ;do for i in $(seq 30 37); do for a in $(seq 40 47);do  echo -ne "\e[${x};${i};${a}""m\\\e[${x};${i};${a}""m\e[0;37;40m \e[0m";done;echo ;done;done;echo ""; echo "Use CTRL+q CTRL+[ in place of \\e in emacs"'
 alias colors2='for i in {1..0}; do for j in {0..255}; do printf "\033[${i};38;5;${j}m %-3s\033[0m" $j; [ $(( $(($j + 1)) % 16 )) -eq 0 ] && echo "";done; echo ""; done'
+alias colors3='for h in {0..5} 7 8; do for i in 38 48; do for j in {0..255}; do printf "\033[${h};${i};5;${j}m %-14s \033[0m" "$( printf "\\\e\\\[%s;%s;%sm " $h $i $j )"; [ $(( $(($j + 1)) % 16 )) -eq 0 ] && echo "";done; echo ""; done; done'
 alias keyboard='sudo sh -c "echo 2 > /sys/module/hid_apple/parameters/fnmode"'
 
