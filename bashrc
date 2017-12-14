@@ -96,7 +96,7 @@ else
   export EDITOR=/usr/bin/vim
 fi
 export SVN_MERGE='vim -d'
-export PROMPT_COMMAND='last=$?;history -a;printf "\e]0;${HOSTNAME} $(date +%H:%M:%S) ${PWD}:${last}\007"'
+export PROMPT_COMMAND='last=$?;history -a;printf "\e]0;${HOSTNAME} $(basename ${PWD}):${last}\007"'
 export PS1='[\u@\h:\w] '
 export FIGNORE='.svn:.git:.pyc'
 export HISTFILESIZE=10000
