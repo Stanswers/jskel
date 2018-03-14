@@ -81,41 +81,6 @@ _up() {
 }
 complete -o nospace -F _up up
 
-cdpath() {
-  cd "${1}/${2}"
-}
-
-_cdpath() {
-  local cur path len dirs
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  path="${1}"
-  len=$((${#path} + 1))
-  for d in "${path}/${cur}"*; do
-    if [ -d "${d}" ] && [[ "${d}" != */target* ]]; then
-      dirs+="${d:$len}/ "
-    fi
-  done
-  COMPREPLY=( $(compgen -W "${dirs}" "${cur}") )
-}
-
-_makecdpath() {
-  local -A paths=( [ws]="${HOME}/workspace" \
-                   [src]="${HOME}/src" \
-                   [gw]="${HOME}/workspace/maven-projects/gateways" \
-                   [mp]="${HOME}/workspace/maven-projects" \
-                   [dev]="${HOME}/src/tbdev" \
-                   [rel]="${HOME}/src/tb" )
-  for p in "${!paths[@]}"; do
-    if [ -d "${paths[${p}]}" ]; then
-      eval "_${p}() { _cdpath ${paths[${p}]}; }"
-      complete -o nospace -F _${p} ${p}
-      alias ${p}="cdpath ${paths[${p}]}"
-    fi
-  done
-}
-_makecdpath
-unset -f _makecdpath
-
 if [ -f "${HOME}/.sshrc" ]; then
   sshenv() {
     local sshrc

@@ -38,59 +38,6 @@ case "$(uname -s)" in
     ;;
 esac
 
-append_to_path() {
-  for p in "${@}"; do
-    case ":${PATH}:" in
-      *:"${p}":*) ;;
-      *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
-    esac
-  done
-  export PATH
-}
-
-remove_from_path() {
-  for p in "${@}"; do
-    PATH=:${PATH}:
-    PATH=${PATH//:${p}:/:}
-    PATH=${PATH#:}
-    PATH=${PATH%:}
-    done
-  export PATH
-}
-
-if [ -d "${HOME}/src/tb" ] || [ -s "${HOME}/src/tbdev" ]; then
-  jhdevsys() {
-    export TBRICKS_SYSTEM=jh_dev_sys
-    export SYSTEM=jh_dev_sys
-    remove_from_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
-                     "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
-    export TBRICKS_TRUNK="${HOME}/src/tbdev"
-    append_to_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
-                   "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
-  }
-
-  jhsys() {
-    export TBRICKS_SYSTEM=jh_sys
-    export SYSTEM=jh_sys
-    remove_from_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
-                     "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
-    export TBRICKS_TRUNK="${HOME}/src/tb"
-    append_to_path "${TBRICKS_TRUNK}/toolchain/x86_64-unknown-linux/bin" \
-                   "${TBRICKS_TRUNK}/build.x86_64-unknown-linux/bin"
-  }
-  jhdevsys
-fi
-if [ -d /opt/tbricks ]; then
-  export TBRICKS_ADMIN_CENTER=jh_admin_sys
-  export TBRICKS_USER=justinh
-  export TBRICKS_TBLOG_SNAPSHOT_SIZE=60000
-fi
-[ -d /etc/tbricks ] && export TBRICKS_ETC=/etc/tbricks
-
-admin_servers() {
-  for i in $(tbadmin info | awk '{if (NR!=1) {print $1} }'); do tbadmin $1 $i; done
-}
-
 [ -d "${HOME}/go" ] && export GOPATH="${HOME}/go"
 export PAGER=/usr/bin/less
 export SYSTEMD_PAGER=/usr/bin/less
@@ -120,6 +67,5 @@ shopt -s cmdhist
 stty -ixon
 
 # added by travis gem
-[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh"
-true
+[ -f "${HOME}/.travis/travis.sh" ] && source "${HOME}/.travis/travis.sh" || true
 
