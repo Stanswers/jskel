@@ -87,6 +87,10 @@ if [ -d /opt/tbricks ]; then
 fi
 [ -d /etc/tbricks ] && export TBRICKS_ETC=/etc/tbricks
 
+admin_servers() {
+  for i in $(tbadmin info | awk '{if (NR!=1) {print $1} }'); do tbadmin $1 $i; done
+}
+
 [ -d "${HOME}/go" ] && export GOPATH="${HOME}/go"
 export PAGER=/usr/bin/less
 export SYSTEMD_PAGER=/usr/bin/less
