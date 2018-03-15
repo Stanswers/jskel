@@ -275,9 +275,7 @@ set laststatus=2
 " Indicates a fast terminal connection
 set ttyfast
 
-if !empty($TBRICKS_TRUNK)
-	autocmd BufRead $TBRICKS_TRUNK/* setlocal makeprg=tbmake\ -sj\ TESTS=NO
-endif
+set makeprg=tbmake\ -sj\ TESTS=NO
 
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
