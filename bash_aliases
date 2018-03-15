@@ -147,6 +147,7 @@ fi
 if command -v killall &> /dev/null; then
   alias killall='killall -u ${USER}'
 fi
+alias fucksvn='while ! svn up; do svn cleanup; done'
 alias du='du -h'
 alias df='df -h'
 alias ls='ls -hl --color=auto'
