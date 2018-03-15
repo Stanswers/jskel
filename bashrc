@@ -56,7 +56,6 @@ export HISTSIZE=10000
 [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
 # Source completeion scripts
 command -v mvn &> /dev/null && [ -f "${HOME}/.bash_completion.maven" ] && source "${HOME}/.bash_completion.maven"
-[ -f /opt/tbricks/admin/etc/bash/.tbricks_completion.bash ] && source /opt/tbricks/admin/etc/bash/.tbricks_completion.bash
 # Source aliases
 [ -f "${HOME}/.bash_aliases" ] && source "${HOME}/.bash_aliases"
 # append to the history file, don't overwrite it
