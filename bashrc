@@ -4,6 +4,7 @@
 # Source global definitions
 [ -f /etc/bashrc ] && source /etc/bashrc
 [ -f /etc/bash.bashrc ] && source /etc/bash.bashrc
+[ -f "${HOME}/.bashrc.itiviti" ] && source "${HOME}/.bashrc.itiviti"
 [ -z "$PS1" ] && return
 
 if command -v gcc &> /dev/null; then
