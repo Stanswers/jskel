@@ -54,6 +54,11 @@
 "          :GoInstallBinaries
 "   References: help: vim-go
 "               https://github.com/fatih/vim-go
+"
+"  Tagbar:
+"   1) dnf install ctags
+"   References: https://github.com/majutsushi/tagbar
+"
 " }}}
 " Plugin Settings "{{{
 "
