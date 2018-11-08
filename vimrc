@@ -126,6 +126,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	"Autoformat settings
 	if IsPluginInstalled('Chiel92/vim-autoformat')
+		let g:formatterpath = ['/opt/llvm-6.0/bin/']
 		noremap <Leader>af :Autoformat<CR>
 	endif
 

@@ -162,4 +162,3 @@ alias colors='for x in {0..8} ;do for i in $(seq 30 37); do for a in $(seq 40 47
 alias colors2='for i in {1..0}; do for j in {0..255}; do printf "\033[${i};38;5;${j}m %-3s\033[0m" $j; [ $(( $(($j + 1)) % 16 )) -eq 0 ] && echo "";done; echo ""; done'
 alias colors3='for h in {0..5} 7 8; do for i in 38 48; do for j in {0..255}; do printf "\033[${h};${i};5;${j}m %-14s \033[0m" "$( printf "\\\e\\\[%s;%s;%sm " $h $i $j )"; [ $(( $(($j + 1)) % 16 )) -eq 0 ] && echo "";done; echo ""; done; done'
 alias keyboard='sudo sh -c "echo 2 > /sys/module/hid_apple/parameters/fnmode"'
-

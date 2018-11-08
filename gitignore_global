@@ -4,6 +4,8 @@
 compile_commands.json*
 cmake-solutions/
 
+.vscode
+
 # Created by https://www.gitignore.io/api/vim
 
 ### Vim ###
