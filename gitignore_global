@@ -4,6 +4,11 @@
 compile_commands.json*
 cmake-solutions/
 
+CMakeLists.txt
+.idea
+cmake-build-debug
+.cmake-build-debug
+
 .vscode
 
 # Created by https://www.gitignore.io/api/vim
