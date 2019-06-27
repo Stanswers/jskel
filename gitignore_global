@@ -3,6 +3,7 @@
 .ycm_extra_conf.pyc
 compile_commands.json*
 cmake-solutions/
+build/
 
 CMakeLists.txt
 .idea

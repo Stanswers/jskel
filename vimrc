@@ -270,7 +270,7 @@ if exists('+belloff')
 endif
 
 " Disable visual bell
-set novb t_vb=
+set vb t_vb=
 
 " Set the GUI font
 set guifont=Consolas
@@ -281,7 +281,7 @@ set laststatus=2
 " Indicates a fast terminal connection
 set ttyfast
 
-set makeprg=tbmake\ -sj\ TESTS=NO
+set makeprg=tbmake\ -sj\ TESTS=NO\ RECURSIVE=NO
 
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
@@ -289,10 +289,10 @@ autocmd FileType sh setlocal makeprg=shellcheck\ %
 set tabstop=4 shiftwidth=0 softtabstop=-1
 
 " tabs=2
-autocmd FileType java,sh,html,xhtml,xml,xslt,xsd,css setlocal tabstop=2
+autocmd FileType java,sh,html,xhtml,xslt,xsd,css setlocal tabstop=2
 
 " tabs=4
-autocmd FileType go,python,make,gitconfig,c,cpp setlocal tabstop=4
+autocmd FileType go,python,make,gitconfig,c,cpp,xml setlocal tabstop=4
 
 " tabs=8
 autocmd FileType markdown,help,text,make setlocal tabstop=8
