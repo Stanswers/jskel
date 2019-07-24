@@ -40,6 +40,7 @@ case "$(uname -s)" in
 esac
 
 [ -d "${HOME}/go" ] && export GOPATH="${HOME}/go"
+export LESS="-RXQ"
 export PAGER=/usr/bin/less
 export SYSTEMD_PAGER=/usr/bin/less
 if [ -n "${DISPLAY}" ] && command -v vimx &> /dev/null; then
