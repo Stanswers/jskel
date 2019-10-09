@@ -77,9 +77,11 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'mtth/scratch.vim'
 	Plugin 'scrooloose/nerdtree'
 	Plugin 'lyuts/vim-rtags'
+	Plugin 'Shougo/neocomplete.vim'
 	Plugin 'davidhalter/jedi-vim'
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
+	Plugin 'fatih/vim-go'
 	if v:version > 700
 		Plugin 'Shougo/vimshell.vim'
 		Plugin 'Shougo/vimproc.vim'
@@ -90,12 +92,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	endif
 	if v:version > 702
 		Plugin 'Chiel92/vim-autoformat'
-	endif
-	if has("patch-7.4.2009")
-		Plugin 'fatih/vim-go'
-	endif
-	if has("+lua")
-		Plugin 'Shougo/neocomplete.vim'
 	endif
 	" =========================== Finish Vundle Config ========================
 	call vundle#end()                  " required
@@ -274,7 +270,7 @@ if exists('+belloff')
 endif
 
 " Disable visual bell
-set vb t_vb=
+set novb t_vb=
 
 " Set the GUI font
 set guifont=Consolas
@@ -285,7 +281,7 @@ set laststatus=2
 " Indicates a fast terminal connection
 set ttyfast
 
-set makeprg=tbmake\ -sj\ TESTS=NO\ RECURSIVE=NO
+set makeprg=tbmake\ -sj\ TESTS=NO
 
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
@@ -293,10 +289,10 @@ autocmd FileType sh setlocal makeprg=shellcheck\ %
 set tabstop=4 shiftwidth=0 softtabstop=-1
 
 " tabs=2
-autocmd FileType java,sh,html,xhtml,xslt,xsd,css setlocal tabstop=2
+autocmd FileType java,sh,html,xhtml,xml,xslt,xsd,css setlocal tabstop=2
 
 " tabs=4
-autocmd FileType go,python,make,gitconfig,c,cpp,xml setlocal tabstop=4
+autocmd FileType go,python,make,gitconfig,c,cpp setlocal tabstop=4
 
 " tabs=8
 autocmd FileType markdown,help,text,make setlocal tabstop=8
