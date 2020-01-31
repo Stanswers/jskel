@@ -41,7 +41,7 @@
 	email = justinhelgesen@gmail.com
 
 [core]
-	pager = less
+	pager = less -q
 	excludesfile = /home/justinh/.gitignore_global
 
 [color]
