@@ -283,6 +283,9 @@ set guifont=Consolas
 " Always show status
 set laststatus=2
 
+" Disable incremental search
+set noincsearch
+
 " Indicates a fast terminal connection
 set ttyfast
 
