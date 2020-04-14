@@ -119,12 +119,12 @@ fi
 if command -v htop &> /dev/null; then
   alias top='htop'
 fi
-if command -v yum &> /dev/null; then
-  alias yum='sudo yum '
-  alias dnf='sudo yum '
-elif command -v dnf &> /dev/null; then
+if command -v dnf &> /dev/null; then
   alias yum='sudo dnf '
   alias dnf='sudo dnf '
+elif command -v yum &> /dev/null; then
+  alias yum='sudo yum '
+  alias dnf='sudo yum '
 fi
 if command -v apt-get &> /dev/null; then
   alias apt-get='sudo apt-get '
