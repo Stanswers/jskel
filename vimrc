@@ -76,7 +76,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	Plugin 'altercation/vim-colors-solarized'
 	Plugin 'mtth/scratch.vim'
 	Plugin 'scrooloose/nerdtree'
-	Plugin 'lyuts/vim-rtags'
 	Plugin 'davidhalter/jedi-vim'
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
@@ -97,6 +96,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	if has("+lua")
 		Plugin 'Shougo/neocomplete.vim'
 	endif
+  if has("+python") || has("+python3")
+    Plugin 'lyuts/vim-rtags'
+  endif
 	" =========================== Finish Vundle Config ========================
 	call vundle#end()                  " required
 	filetype plugin indent on          " required
@@ -328,6 +330,9 @@ if !exists(':DiffOrig')
 	command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 				\ | wincmd p | diffthis
 endif
+
+" Syntax highlighting sucks for long lines, limit it to 365 characters
+set synmaxcol=365
 
 " }}}
 
