@@ -49,7 +49,7 @@ else
   export EDITOR=/usr/bin/vim
 fi
 export SVN_MERGE='vim -d'
-export PROMPT_COMMAND='last=$?;history -a;if git rev-parse &> /dev/null; then repo="$(git rev-parse --abbrev-ref HEAD) "; else repo=""; fi;printf "\e]0;${HOSTNAME} ${repo}"$(basename ${PWD})":${last}\007";unset last; unset repo;'
+export PROMPT_COMMAND='last=$?;history -a;if git rev-parse &> /dev/null; then repo="$(git rev-parse --abbrev-ref HEAD) "; else repo=""; fi;printf "\e]0;${HOSTNAME} ${repo}$(basename "${PWD}"):${last}\007";unset last; unset repo;'
 export PS1='[\u@\h:\w] '
 export FIGNORE='.svn:.git:.pyc'
 export HISTFILESIZE=10000
