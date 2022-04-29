@@ -73,6 +73,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	" =========================== Activate Plugins below =======================
 	Plugin 'gmarik/Vundle.vim'         " let Vundle manage Vundle, required
 	Plugin 'tpope/vim-fugitive'
+	Plugin 'mileszs/ack.vim'
 	Plugin 'altercation/vim-colors-solarized'
 	Plugin 'mtth/scratch.vim'
 	Plugin 'scrooloose/nerdtree'
@@ -96,9 +97,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 	if has("+lua")
 		Plugin 'Shougo/neocomplete.vim'
 	endif
-  if has("+python") || has("+python3")
-    Plugin 'lyuts/vim-rtags'
-  endif
+	if has("+python") || has("+python3")
+		Plugin 'lyuts/vim-rtags'
+	endif
 	" =========================== Finish Vundle Config ========================
 	call vundle#end()                  " required
 	filetype plugin indent on          " required
@@ -132,7 +133,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	"Autoformat settings
 	if IsPluginInstalled('Chiel92/vim-autoformat')
-		let g:formatterpath = ['/opt/llvm-6.0/bin/']
+		let g:formatterpath = ['/opt/llvm-10/bin/']
+		let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
+		let g:formatters_json = ['my_custom_json']
 		noremap <Leader>af :Autoformat<CR>
 	endif
 
@@ -155,11 +158,10 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	" Solarized color theme
 	if IsPluginInstalled('altercation/vim-colors-solarized')
-		if $TERM != 'rxvt-256color' && ! has('gui_running')
+		if $TERM !~ '\.*256color$' && ! has('gui_running')
 			let g:solarized_termcolors=256   " Use degraded 256 color schema
 			set t_Co=256
-		endif
-		if $TERM == 'rxvt-256color'
+		else
 			let g:solarized_termtrans=1      " Transparant background
 		endif
 		let g:solarized_hitrail=1          " Hilight trailing white space
@@ -297,6 +299,13 @@ autocmd FileType sh setlocal makeprg=shellcheck\ %
 
 " tabsstop = shiftwidth = softtabstop
 set tabstop=4 shiftwidth=0 softtabstop=-1
+
+" Default to expandtab
+set expandtab
+
+" Fix issue where json file was detected as javascript
+" NB: Must be executed before any "autocmd FileType"
+autocmd BufEnter *.json :setlocal filetype=json
 
 " tabs=2
 autocmd FileType java,sh,html,xhtml,css setlocal tabstop=2

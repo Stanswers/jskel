@@ -1,6 +1,8 @@
 #!/bin/bash
 # .bash_profile
 
+set -o vi
+
 # Get the aliases and functions
 [ -f "${HOME}/.bashrc" ] && source "${HOME}/.bashrc"
 
