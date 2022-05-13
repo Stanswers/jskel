@@ -161,9 +161,10 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 		if $TERM !~ '\.*256color$' && ! has('gui_running')
 			let g:solarized_termcolors=256   " Use degraded 256 color schema
 			set t_Co=256
-		else
-			let g:solarized_termtrans=1      " Transparant background
 		endif
+		"if $TERM == 'rxvt-256color'
+			"let g:solarized_termtrans=1      " Transparant background
+		"endif
 		let g:solarized_hitrail=1          " Hilight trailing white space
 		set background=dark                " Configure solarized[dark|light]
 		syntax enable                      " Enable syntax highlighting
