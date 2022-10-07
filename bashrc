@@ -56,6 +56,7 @@ export PS1='[\u@\h:\w] '
 export FIGNORE='.svn:.git:.pyc'
 export HISTFILESIZE=10000
 export HISTSIZE=10000
+export GTEST_COLOR=yes
 # Not everyone does dircolors in the /etc bash scripts so lets just do it here
 [ -f "${HOME}/.dircolors" ] && eval "$(dircolors -b "${HOME}/.dircolors")"
 # Source completeion scripts
