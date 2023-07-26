@@ -9,6 +9,14 @@ set -o vi
 [ -f "${HOME}/.bashrc.itiviti" ] && source "${HOME}/.bashrc.itiviti"
 [ -z "$PS1" ] && return
 
+for p in "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" /usr/local/usr/bin; do
+  case ":${PATH}:" in
+    *:"${p}":*) ;;
+    *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;
+  esac
+done
+export PATH
+
 if command -v gcc &> /dev/null; then
   GNUCC_VER="$(gcc -v &> >(grep -oP 'gcc version \K([0-9]+.[0-9]+.[0-9]+)'))"
   export GNUCC_VER
