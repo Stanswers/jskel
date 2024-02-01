@@ -112,10 +112,6 @@ if [ -n "${DISPLAY}" ]; then
     #alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\{0,2\}\s*alert$//'\'')"'
   fi
 fi
-if command -v tbcomponent &> /dev/null; then
-  alias lsgw='tbcomponent ls | grep -vP "^ +${TBRICKS_SYSTEM%_sys}.*"'
-  alias lscore='tbcomponent ls ${TBRICKS_SYSTEM%_sys}\*'
-fi
 if command -v htop &> /dev/null; then
   alias top='htop'
 fi
