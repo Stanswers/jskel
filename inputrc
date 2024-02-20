@@ -10,18 +10,6 @@
 # assignments from /etc/Inputrc
 $include /etc/Inputrc
 
-# Set various bindings for emacs mode.
-
-set editing-mode emacs
-
-$if mode=emacs
-
-C-h: backward-kill-word
-C-q: quoted-insert
-M-e: print-last-kbd-macro
-
-$endif
-
 # allow forward and backward search with arrow keys
 "\e[A": history-search-backward
 "\e[B": history-search-forward
