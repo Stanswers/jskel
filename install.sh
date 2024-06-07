@@ -72,6 +72,10 @@ cleanFiles() {
   done
 }
 
+minttyInstall() {
+  copyFiles "minttyrc"
+}
+
 gitInstall() {
   copyFiles "gitconfig" "gitk" "gitignore_global"
 }
@@ -148,9 +152,11 @@ main() {
   files=([git]="gitconfig gitk gitignore_global" \
          [shell]="bashrc bash_aliases bash_logout bash_profile inputrc sshrc" \
          [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
-         [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service" )
+         [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service" \
+         [mintty]="minttyrc")
   targets=([git]="gitInstall" [shell]="shellInstall" \
-           [vim]="vimInstall" [x11]="x11Install")
+           [vim]="vimInstall" [x11]="x11Install" \
+           [mintty]="minttyInstall")
   [ ${#} -eq 0 ] && actions=${targets[@]}
   while [ ${#} -ne 0 ]; do
     case "${1}" in
@@ -158,6 +164,7 @@ main() {
       shell) actions[shell]=${targets[shell]}; shift;;
       vim) actions[vim]=${targets[vim]}; shift;;
       x11) actions[x11]=${targets[x11]}; shift;;
+      mintty) actions[mintty]=${targets[mintty]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
       diff | d) diffFiles ${files[@]}; return 0;;
       vimdiff | vd) vimdiffFiles ${files[@]}; return 0;;

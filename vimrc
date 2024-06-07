@@ -158,7 +158,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
 	" Solarized color theme
 	if IsPluginInstalled('altercation/vim-colors-solarized')
-		if $TERM == 'xterm-256color' || ($TERM !~ '\.*256color$' && ! has('gui_running'))
+		if $TERM !~ '\.*256color$' && ! has('gui_running')
 			let g:solarized_termcolors=256   " Use degraded 256 color schema
 			set t_Co=256
 		endif
