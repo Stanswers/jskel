@@ -3,7 +3,10 @@ Description=Urxvt Terminal Daemon
 Requires=urxvtd.socket
 
 [Service]
-ExecStart=/usr/bin/urxvt256cd -o -q
+# On WSL options -o/-f don't work; just do without
+# ExecStart=/usr/bin/urxvtd
+ExecStart=/usr/bin/urxvtd -q -o -f
+Environment=RXVT_SOCKET=%h/.urxvt/urxvtd-%H
 
 [Install]
 WantedBy=default.target
