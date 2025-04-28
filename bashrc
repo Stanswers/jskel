@@ -9,7 +9,7 @@ set -o vi
 [ -f "${HOME}/.bashrc.itiviti" ] && source "${HOME}/.bashrc.itiviti"
 [ -z "$PS1" ] && return
 
-for p in "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" /usr/local/usr/bin; do
+for p in "${HOME}/.local/bin" "${HOME}/bin" "${HOME}/.cabal/bin" /usr/local/usr/bin /usr/local/bin; do
   case ":${PATH}:" in
     *:"${p}":*) ;;
     *) [ -d "${p}" ] && PATH=${PATH}:${p} ;;

@@ -29,11 +29,6 @@
 "      $ make
 "   References: :help vimproc
 "
-"  VimRtags:
-"    vim-rtags requires RTags to be installed.  See
-"    doc/README.codecompletion.md and https://github.com/Andersbakken/rtags
-"    for more information.
-"
 "  VimAutoFormat:
 "   Optional External Format Programs:
 "     clang-format: provided by clang - supports C, C++, Objective-C
@@ -47,17 +42,6 @@
 "   2) pip install jsbeautifier
 "   3) Execute :PluginInstall
 "   References: https://github.com/Chiel92/vim-autoformat
-"
-"  VimGo:
-"   1) Setup GOPATH and PATH for go development
-"   2) install necessary binaries (such as gocode, godef, goimports, etc.)
-"          :GoInstallBinaries
-"   References: help: vim-go
-"               https://github.com/fatih/vim-go
-"
-"  Tagbar:
-"   1) dnf install ctags
-"   References: https://github.com/majutsushi/tagbar
 "
 " }}}
 " Plugin Settings "{{{
@@ -80,25 +64,18 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   Plugin 'davidhalter/jedi-vim'
   Plugin 'vim-airline/vim-airline'
   Plugin 'vim-airline/vim-airline-themes'
+  "Plugin 'junegunn/fzf'
+  "Plugin 'junegunn/fzf.vim'
+  if v:version > 910
+    Plugin 'ycm-core/YouCompleteMe'
+  endif
   if v:version > 700
     Plugin 'Shougo/vimshell.vim'
     Plugin 'Shougo/vimproc.vim'
     Plugin 'scrooloose/nerdcommenter'
   endif
-  if v:version > 701
-    Plugin 'majutsushi/tagbar'
-  endif
   if v:version > 702
     Plugin 'Chiel92/vim-autoformat'
-  endif
-  if has("patch-7.4.2009")
-    Plugin 'fatih/vim-go'
-  endif
-  if has("+lua")
-    Plugin 'Shougo/neocomplete.vim'
-  endif
-  if has("+python") || has("+python3")
-    Plugin 'lyuts/vim-rtags'
   endif
   " =========================== Finish Vundle Config ========================
   call vundle#end()                  " required
@@ -133,10 +110,23 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
   "Autoformat settings
   if IsPluginInstalled('Chiel92/vim-autoformat')
-    let g:formatterpath = ['/opt/llvm-10/bin/']
+    let g:formatterpath = ['/opt/llvm-14/bin/']
     let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
     let g:formatters_json = ['my_custom_json']
     noremap <Leader>af :Autoformat<CR>
+  endif
+
+  " YouCompleteMe
+  if IsPluginInstalled('ycm-core/YouCompleteMe')
+    let g:ycm_clangd_binary_path='/opt/llvm-14/bin/clangd'
+    let g:ycm_clangd_args=[
+      \ '-background-index',
+      \ '-completion-style=bundled',
+      \ '-j=16',
+      \ '-header-insertion=iwyu',
+      \ '--query-driver=/usr/**/*,/opt/**/*',
+      \ '--suggest-missing-includes'
+      \ ]
   endif
 
   " NERDTree Settings
@@ -172,68 +162,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
     set background=dark                " Configure solarized[dark|light]
     syntax enable                      " Enable syntax highlighting
     colorscheme solarized              " Activate solarized color scheme
-  endif
-
-  " Setup neocomplete
-  if IsPluginInstalled('Shougo/neocomplete.vim')
-    let g:acp_enableAtStartup = 0
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    let g:neocomplete#sources#dictionary#dictionaries = {
-          \ 'default' : '',
-          \ 'vimshell' : $HOME.'/.vimshell_hist',
-          \ 'scheme' : $HOME.'/.gosh_completions'
-          \ }
-    if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-      return pumvisible() ? "\<C-y>" : "\<CR>"
-    endfunction
-    inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-      let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    " Setup jedi with neocomplete
-    if IsPluginInstalled('davidhalter/jedi-vim')
-      if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-      endif
-      autocmd FileType python setlocal omnifunc=jedi#completions
-      let g:jedi#completions_enabled = 0
-      let g:jedi#auto_vim_configuration = 0
-      let g:jedi#smart_auto_mappings = 0
-      let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-      " alternative pattern: '\h\w*\|[^. \t]\.\w*'
-    else
-      autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    endif
-    " Setup Neocomplete for Cpp with vim-rtags
-    if IsPluginInstalled('lyuts/vim-rtags')
-      function! SetupNeocomleteForCppWithRtags()
-        setlocal omnifunc=RtagsCompleteFunc
-        if !exists('g:neocomplete#sources#omni#input_patterns')
-          let g:neocomplete#sources#omni#input_patterns = {}
-        endif
-        let l:cpp_patterns='[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-        let g:neocomplete#sources#omni#input_patterns.cpp = l:cpp_patterns
-        set completeopt+=longest,menuone
-      endfunction
-      autocmd FileType cpp,c call SetupNeocomleteForCppWithRtags()
-    endif
   endif
 endif
 " }}}
