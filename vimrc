@@ -66,7 +66,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   Plugin 'vim-airline/vim-airline-themes'
   "Plugin 'junegunn/fzf'
   "Plugin 'junegunn/fzf.vim'
-  if v:version > 910
+  if v:version > 900
     Plugin 'ycm-core/YouCompleteMe'
   endif
   if v:version > 700
@@ -188,7 +188,7 @@ if has("patch-7.4.710")
 endif
 
 " Display line numbers
-set number
+set relativenumber
 
 " Display right margin
 if exists('+colorcolumn')
@@ -230,7 +230,7 @@ set makeprg=tbmake\ -sj\ TESTS=NO\ RECURSIVE=NO
 autocmd FileType sh setlocal makeprg=shellcheck\ %
 
 " tabsstop = shiftwidth = softtabstop
-set tabstop=4 shiftwidth=0 softtabstop=-1
+set tabstop=2 shiftwidth=0 softtabstop=-1
 
 " Default to expandtab
 set expandtab
@@ -255,7 +255,7 @@ autocmd FileType markdown,help,text setlocal textwidth=78
 autocmd FileType c,cpp,sh,xml,html,java,perl,python,json setlocal expandtab
 
 " tabs
-autocmd FileType go,make setlocal noexpandtab
+autocmd FileType make setlocal noexpandtab
 
 " turn on spell check
 autocmd FileType gitcommit setlocal spell

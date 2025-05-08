@@ -1,6 +1,7 @@
 .clang-format
 .ycm_extra_conf.py
 .ycm_extra_conf.pyc
+.cache/
 compile_commands.json*
 cmake-solutions/
 build/
