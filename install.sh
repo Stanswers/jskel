@@ -19,6 +19,16 @@ clean() {
   done
 }
 
+mkds() {
+  for f in ${@}; do
+    local dir="${f}"
+    if [ -f "${f}" ]; then
+      dir="$(dirname "${f}")"
+    fi
+    mkd "${dir}"
+  done
+}
+
 mkd() {
   local dir="${HOME}/.${1}"
   if ! [ -d "${dir}" ]; then
@@ -61,7 +71,9 @@ vimdiffFiles() {
 copyFiles() {
   printf "Installing:\n"
   for f in "${@}"; do
-    copy "${f}"
+    if [ -f "${f}" ]; then
+      copy "${f}"
+    fi
   done
 }
 
@@ -73,16 +85,15 @@ cleanFiles() {
 }
 
 minttyInstall() {
-  copyFiles "minttyrc"
+  copyFiles ${@}
 }
 
 gitInstall() {
-  copyFiles "gitconfig" "gitk" "gitignore_global"
+  copyFiles ${@}
 }
 
 shellInstall() {
-  copyFiles "bashrc" "bash_aliases" "bash_logout" "bash_profile" "inputrc" \
-    "sshrc"
+  copyFiles ${@}
   wget -q -nc \
     "https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark" \
     -O "${HOME}/.dircolors" || echo -n
@@ -92,8 +103,8 @@ shellInstall() {
 }
 
 vimInstall() {
-  mkd "vim/doc"
-  copyFiles "vimrc" "vim/doc/hell.txt" "vim/doc/tags"
+  mkds ${@}
+  copyFiles ${@}
   if ! [ -d "${HOME}/.vim/bundle/Vundle.vim" ]; then
     mkd "vim/bundle"
     git clone "https://github.com/VundleVim/Vundle.vim.git" \
@@ -105,13 +116,8 @@ vimInstall() {
 }
 
 nvimInstall() {
-  local nvim_config_path="${HOME}/.config/nvim"
-  if ! [ -d "${nvim_config_path}" ]; then
-    mkdir -p "${nvim_config_path}/lua/plugins"
-    mkdir -p "${nvim_config_path}/lua/config"
-  fi
-  local -a files=("config/nvim/*" "config/nvim/lua/config/*" "config/nvim/lua/plugins/*")
-  copyFiles ${files[@]}
+  mkds ${@}
+  copyFiles ${@}
 }
 
 x11Install() {
@@ -145,10 +151,10 @@ x11Install() {
 printHelp() {
   local scriptName=$(basename "${0}")
 cat <<END
-Usage:  ${scriptName} [options] [git] [shell] [vim] [x11]
+Usage:  ${scriptName} [options] [git] [shell] [vim] [nvim] [x11]
         ${scriptName} [options] [diff] [vimdiff] [clean]
 Install jskel git, shell, vim, and x11 files.
-Clean backed up versions of jskel git, shell, vim, and x11 files.
+Clean backed up versions of jskel git, shell, vim, nvim, and x11 files.
 Diff installed jskel files.
 
 Options:
@@ -163,7 +169,7 @@ main() {
   files=([git]="gitconfig gitk gitignore_global" \
          [shell]="bashrc bash_aliases bash_logout bash_profile inputrc sshrc" \
          [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
-         [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service" \
+         [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service inputrc Xdefaults" \
          [mintty]="minttyrc" [nvim]="${nvim_files[@]}")
   targets=([git]="gitInstall" [shell]="shellInstall" \
            [vim]="vimInstall" [x11]="x11Install" \
@@ -188,8 +194,8 @@ main() {
         printf "WARN: Unknown target (ignored): %s\n"  "${1}" 1>&2; shift;;
     esac
   done
-  for action in ${actions[@]}; do
-    ${action} ${files[${action}]}
+  for action in ${!actions[@]}; do
+    ${actions[${action}]} ${files[${action}]}
   done
 }
 
