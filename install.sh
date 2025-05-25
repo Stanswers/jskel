@@ -104,6 +104,16 @@ vimInstall() {
   fi;
 }
 
+nvimInstall() {
+  local nvim_config_path="${HOME}/.config/nvim"
+  if ! [ -d "${nvim_config_path}" ]; then
+    mkdir -p "${nvim_config_path}/lua/plugins"
+    mkdir -p "${nvim_config_path}/lua/config"
+  fi
+  local -a files=("config/nvim/*" "config/nvim/lua/config/*" "config/nvim/lua/plugins/*")
+  copyFiles ${files[@]}
+}
+
 x11Install() {
   copyFiles "inputrc" "Xdefaults"
   # This is a trick to copy the existing file (the same as the others
@@ -148,21 +158,23 @@ END
 }
 
 main() {
+  local -a nvim_files=("config/nvim/*" "config/nvim/lua/config/*" "config/nvim/lua/plugins/*")
   local -A targets actions empty files
   files=([git]="gitconfig gitk gitignore_global" \
          [shell]="bashrc bash_aliases bash_logout bash_profile inputrc sshrc" \
          [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
          [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service" \
-         [mintty]="minttyrc")
+         [mintty]="minttyrc" [nvim]="${nvim_files[@]}")
   targets=([git]="gitInstall" [shell]="shellInstall" \
            [vim]="vimInstall" [x11]="x11Install" \
-           [mintty]="minttyInstall")
+           [mintty]="minttyInstall" [nvim]="nvimInstall")
   [ ${#} -eq 0 ] && actions=${targets[@]}
   while [ ${#} -ne 0 ]; do
     case "${1}" in
       git) actions[git]=${targets[git]}; shift;;
       shell) actions[shell]=${targets[shell]}; shift;;
       vim) actions[vim]=${targets[vim]}; shift;;
+      nvim) actions[nvim]=${targets[nvim]}; shift;;
       x11) actions[x11]=${targets[x11]}; shift;;
       mintty) actions[mintty]=${targets[mintty]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;

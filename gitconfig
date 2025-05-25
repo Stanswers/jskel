@@ -1,58 +1,59 @@
 [diff]
-	tool = vimdiff
-	guitool = meld
+    tool = vimdiff
+    guitool = meld
 
 [difftool "vimdiff"]
-	cmd = vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\"
+    cmd = vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\"
 
 [merge]
-	tool = vimdiff
-	guitool = meld
+    tool = vimdiff
+    guitool = meld
 
 [alias]
-	up = "!git pull && git submodule update --init"
-	sw = "!git_switch() { git checkout \"$@\" && git submodule update --init; }; git_switch"
-	ass = add
-	cc = "!cc() { cd \"$GIT_PREFIX\"; git diff --cached $@ | awk -f ~/scripts/gitchurn; }; cc"
-	c = "!c() { cd \"$GIT_PREFIX\"; git diff $@ | awk -f ~/scripts/gitchurn; }; c"
-	st = status
-	ci = commit
-	br = branch -vv
-	co = checkout
-	dc = diff --cached
-	dt = difftool -y -g
-	dtc = difftool -y -g --cached
-	vd = difftool
-	vdc = difftool --cached
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	who = shortlog -s --
-	undo = reset HEAD~1 --mixed
-	squash = rebase -i
-	wc = whatchanged
-	untrack = rm --cache --
-	amend = commit -a --amend
-	revert = "!rv() { if [ $# -eq 1 ]; then git diff \"$1:$1^\" | git apply; fi }; rv"
+    dbr = "!git push origin --delete \"$(git rev-parse --abbrev-ref HEAD)\""
+    up = "!git pull && git submodule update --init"
+    sw = "!git_switch() { git checkout \"$@\" && git submodule update --init; }; git_switch"
+    ass = add
+    cc = "!cc() { cd \"$GIT_PREFIX\"; git diff --cached $@ | awk -f ~/scripts/gitchurn; }; cc"
+    c = "!c() { cd \"$GIT_PREFIX\"; git diff $@ | awk -f ~/scripts/gitchurn; }; c"
+    st = status
+    ci = commit
+    br = branch -vv
+    co = checkout
+    dc = diff --cached
+    dt = difftool -y -g
+    dtc = difftool -y -g --cached
+    vd = difftool
+    vdc = difftool --cached
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    who = shortlog -s --
+    undo = reset HEAD~1 --mixed
+    squash = rebase -i
+    wc = whatchanged
+    untrack = rm --cache --
+    amend = commit -a --amend
+    revert = "!rv() { if [ $# -eq 1 ]; then git diff \"$1:$1^\" | git apply; fi }; rv"
 
 [clean]
-	requireForce = false
+    requireForce = false
 
 [user]
-	name = Justin Helgesen
-	email = justinhelgesen@gmail.com
+    name = Justin Helgesen
+    email = justinhelgesen@gmail.com
 
 [core]
-	pager = less -q
-	excludesfile = /home/justinh/.gitignore_global
+    pager = less -q
+    excludesfile = /home/justinh/.gitignore_global
 
 [color]
-	ui = true
+    ui = true
 
 [push]
-	default = simple
+    default = simple
 
 [pull]
-	rebase = preserve
+    rebase = preserve
 
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
 
