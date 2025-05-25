@@ -5,6 +5,9 @@ vim.opt.listchars = { space = '·', tab = '»·', trail= '~', eol = '▼' }
 vim.opt.list = false
 vim.opt.makeprg = "tbmake -sj TESTS=NO RECURSIVE=YES"
 vim.opt.scrolljump = 20
+vim.opt.visualbell = false
+vim.opt.errorbells = false
+vim.opt.belloff = "all"
 
 -- tab settings
 vim.opt.expandtab = true
@@ -13,6 +16,5 @@ vim.opt.shiftwidth = 0
 vim.opt.softtabstop = -1
 
 vim.g.clipboard = "win32yank"
-
 vim.g.autoformat = false
 

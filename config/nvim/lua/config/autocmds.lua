@@ -10,6 +10,12 @@ vim.api.nvim_create_autocmd({"FileType"}, {
   callback = function() vim.opt.tabstop = 4 end,
 })
 
+-- tabstop = 8
+vim.api.nvim_create_autocmd({"FileType"}, {
+  pattern = {"markdown", "help", "text", "make"},
+  callback = function() vim.opt.tabstop = 8 end,
+})
+
 -- tabs not spaces
 vim.api.nvim_create_autocmd({"FileType"}, {
   pattern = {"make"},
