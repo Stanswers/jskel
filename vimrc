@@ -127,6 +127,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
       \ '--query-driver=/usr/**/*,/opt/**/*',
       \ '--suggest-missing-includes'
       \ ]
+		noremap gd :YcmCompleter GoTo<CR>
   endif
 
   " NERDTree Settings
