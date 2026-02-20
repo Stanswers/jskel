@@ -34,3 +34,9 @@ vim.api.nvim_create_autocmd({"FileType"}, {
   callback = function() vim.opt.spell = true end,
 })
 
+-- detect jsonnet as json
+-- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNewFile' }, {
+--   pattern = '*.jsonnet',
+--   command = 'setlocal filetype=json'
+-- })
+

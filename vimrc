@@ -110,7 +110,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
   "Autoformat settings
   if IsPluginInstalled('Chiel92/vim-autoformat')
-    let g:formatterpath = ['/opt/llvm-14/bin/']
+    let g:formatterpath = ['/opt/llvm-20/bin/']
     let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
     let g:formatters_json = ['my_custom_json']
     noremap <Leader>af :Autoformat<CR>
@@ -118,7 +118,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
 
   " YouCompleteMe
   if IsPluginInstalled('ycm-core/YouCompleteMe')
-    let g:ycm_clangd_binary_path='/opt/llvm-14/bin/clangd'
+    let g:ycm_clangd_binary_path='/opt/llvm-20/bin/clangd'
     let g:ycm_clangd_args=[
       \ '-background-index',
       \ '-completion-style=bundled',
