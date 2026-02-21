@@ -66,6 +66,7 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   Plugin 'vim-airline/vim-airline-themes'
   "Plugin 'junegunn/fzf'
   "Plugin 'junegunn/fzf.vim'
+  Plugin 'sheerun/vim-polyglot'
   if v:version > 900
     Plugin 'ycm-core/YouCompleteMe'
   endif
@@ -120,11 +121,11 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   if IsPluginInstalled('ycm-core/YouCompleteMe')
     let g:ycm_clangd_binary_path='/opt/llvm-20/bin/clangd'
     let g:ycm_clangd_args=[
-		  \ '--compile-commands-dir=./build.x86_64-unknown-linux/db/user',
- 			\ '--query-driver=/usr/**/*,/opt/**/*',
+      \ '--compile-commands-dir=./build.x86_64-unknown-linux/db/user',
+      \ '--query-driver=/usr/**/*,/opt/**/*',
       \ '-j=16',
       \ ]
-		noremap gd :YcmCompleter GoTo<CR>
+    noremap gd :YcmCompleter GoTo<CR>
   endif
 
   " NERDTree Settings
@@ -257,6 +258,7 @@ autocmd FileType make setlocal noexpandtab
 
 " turn on spell check
 autocmd FileType gitcommit setlocal spell
+highlight SpellBad cterm=bold,underline
 
 " Trim trailing white space when writing
 "autocmd FileType python,make,c,cpp,java,php,xml,html,sh,vim

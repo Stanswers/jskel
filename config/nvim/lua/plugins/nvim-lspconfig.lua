@@ -9,13 +9,7 @@ return {
         },
         root_dir = function(fname)
           return require("lspconfig.util").root_pattern(
-            "Makefile",
-            "configure.ac",
-            "configure.in",
-            "config.h.in",
-            "meson.build",
-            "meson_options.txt",
-            "build.ninja"
+            ".git"
           )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
             fname
           ) or require("lspconfig.util").find_git_ancestor(fname)
@@ -25,6 +19,7 @@ return {
         },
         cmd = {
           "/opt/llvm-20/bin/clangd",
+          "--compile-commands-dir=./build.x86_64-unknown-linux/db/user",
           "--query-driver=/usr/**/*,/opt/**/*",
           "-j=16",
         },
