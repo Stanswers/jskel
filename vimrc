@@ -120,12 +120,9 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   if IsPluginInstalled('ycm-core/YouCompleteMe')
     let g:ycm_clangd_binary_path='/opt/llvm-20/bin/clangd'
     let g:ycm_clangd_args=[
-      \ '-background-index',
-      \ '-completion-style=bundled',
+		  \ '--compile-commands-dir=./build.x86_64-unknown-linux/db/user',
+ 			\ '--query-driver=/usr/**/*,/opt/**/*',
       \ '-j=16',
-      \ '-header-insertion=iwyu',
-      \ '--query-driver=/usr/**/*,/opt/**/*',
-      \ '--suggest-missing-includes'
       \ ]
 		noremap gd :YcmCompleter GoTo<CR>
   endif

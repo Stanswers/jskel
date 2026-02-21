@@ -24,13 +24,9 @@ return {
           offsetEncoding = { "utf-16" },
         },
         cmd = {
-          "/opt/llvm-14/bin/clangd",
-          "--background-index",
+          "/opt/llvm-20/bin/clangd",
+          "--query-driver=/usr/**/*,/opt/**/*",
           "-j=16",
-          "--header-insertion=iwyu",
-          "--completion-style=bundled",
-          '--query-driver=/usr/**/*,/opt/**/*',
-          '--suggest-missing-includes',
         },
         init_options = {
           usePlaceholders = true,
