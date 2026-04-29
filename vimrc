@@ -64,8 +64,8 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   Plugin 'davidhalter/jedi-vim'
   Plugin 'vim-airline/vim-airline'
   Plugin 'vim-airline/vim-airline-themes'
-  "Plugin 'junegunn/fzf'
-  "Plugin 'junegunn/fzf.vim'
+	Plugin 'junegunn/fzf'
+	Plugin 'junegunn/fzf.vim'
   Plugin 'sheerun/vim-polyglot'
   if v:version > 900
     Plugin 'ycm-core/YouCompleteMe'
@@ -109,21 +109,30 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
     endif
   endif
 
+	" fzf
+	if IsPluginInstalled('junegunn/fzf')
+		" Initialize configuration dictionary
+		let g:fzf_vim = {}
+	endif
+	"
   "Autoformat settings
   if IsPluginInstalled('Chiel92/vim-autoformat')
     let g:formatterpath = ['/opt/llvm-20/bin/']
     let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
     let g:formatters_json = ['my_custom_json']
     noremap <Leader>af :Autoformat<CR>
+		" Disable YCM in diff mode
+		if &diff
+			let g:ycm_auto_trigger = 0
+		endif
   endif
 
   " YouCompleteMe
   if IsPluginInstalled('ycm-core/YouCompleteMe')
     let g:ycm_clangd_binary_path='/opt/llvm-20/bin/clangd'
     let g:ycm_clangd_args=[
-      \ '--compile-commands-dir=./build.x86_64-unknown-linux/db/user',
       \ '--query-driver=/usr/**/*,/opt/**/*',
-      \ '-j=16',
+      \ '-j=8',
       \ ]
     noremap gd :YcmCompleter GoTo<CR>
   endif
