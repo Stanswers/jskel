@@ -7,7 +7,9 @@ return {
         keys = {
           { "<leader>ch", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
         },
-        root_dir = function(fname)
+        -- Neovim 0.11+: root_dir receives bufnr (integer), not fname (string).
+        root_dir = function(bufnr)
+          local fname = vim.api.nvim_buf_get_name(bufnr)
           return require("lspconfig.util").root_pattern(
             ".git"
           )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(

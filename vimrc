@@ -64,9 +64,10 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   Plugin 'davidhalter/jedi-vim'
   Plugin 'vim-airline/vim-airline'
   Plugin 'vim-airline/vim-airline-themes'
-	Plugin 'junegunn/fzf'
-	Plugin 'junegunn/fzf.vim'
+  Plugin 'junegunn/fzf'
+  Plugin 'junegunn/fzf.vim'
   Plugin 'sheerun/vim-polyglot'
+  Plugin 'github/copilot.vim'
   if v:version > 900
     Plugin 'ycm-core/YouCompleteMe'
   endif
@@ -91,6 +92,8 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
   endfunction
 
   if IsPluginInstalled('vim-airline/vim-airline')
+    let g:airline_theme='solarized'
+    let g:airline_solarized_bg='dark'
     let g:airline#extensions#tabline#enabled = 0
     if g:airline#extensions#tabline#enabled != 0
       let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -109,31 +112,33 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
     endif
   endif
 
-	" fzf
-	if IsPluginInstalled('junegunn/fzf')
-		" Initialize configuration dictionary
-		let g:fzf_vim = {}
-	endif
-	"
+  if IsPluginInstalled('junegunn/fzf')
+    " Initialize configuration dictionary
+    let g:fzf_vim = {}
+  endif
+
   "Autoformat settings
   if IsPluginInstalled('Chiel92/vim-autoformat')
     let g:formatterpath = ['/opt/llvm-20/bin/']
     let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
     let g:formatters_json = ['my_custom_json']
     noremap <Leader>af :Autoformat<CR>
-		" Disable YCM in diff mode
-		if &diff
-			let g:ycm_auto_trigger = 0
-		endif
+    " Disable YCM in diff mode
+    if &diff
+      let g:ycm_auto_trigger = 0
+    endif
   endif
 
   " YouCompleteMe
   if IsPluginInstalled('ycm-core/YouCompleteMe')
     let g:ycm_clangd_binary_path='/opt/llvm-20/bin/clangd'
+    let g:ycm_enable_semantic_highlighting = 1
     let g:ycm_clangd_args=[
       \ '--query-driver=/usr/**/*,/opt/**/*',
       \ '-j=8',
       \ ]
+    " jdt.ls (Java) requires Java 17+ — system java is 8, point it at 17
+    let g:ycm_java_binary_path='/usr/lib/jvm/java-17-openjdk-17.0.19.0.10-1.el8.x86_64/bin/java'
     noremap gd :YcmCompleter GoTo<CR>
   endif
 
@@ -243,6 +248,10 @@ set tabstop=2 shiftwidth=0 softtabstop=-1
 " Default to expandtab
 set expandtab
 
+" vim-polyglot's markdown.vim is missing groups that java.vim (Vim 9.1)
+" expects for Javadoc markdown highlighting, causing E28 on every Java file.
+let g:java_ignore_markdown = 1
+
 " Fix issue where json file was detected as javascript
 " NB: Must be executed before any "autocmd FileType"
 autocmd BufEnter *.json :setlocal filetype=json
@@ -286,4 +295,4 @@ set synmaxcol=365
 
 " }}}
 
-" vim:foldmethod=marker:foldlevel=0:ts=2:noet
+" vim:foldmethod=marker:foldlevel=0:ts=2:et
