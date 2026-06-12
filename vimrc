@@ -123,10 +123,6 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
     let g:formatdef_my_custom_json='"js-beautify -s 2 -P -n -b expand "'
     let g:formatters_json = ['my_custom_json']
     noremap <Leader>af :Autoformat<CR>
-    " Disable YCM in diff mode
-    if &diff
-      let g:ycm_auto_trigger = 0
-    endif
   endif
 
   " YouCompleteMe
@@ -139,7 +135,12 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
       \ ]
     " jdt.ls (Java) requires Java 17+ — system java is 8, point it at 17
     let g:ycm_java_binary_path='/usr/lib/jvm/java-17-openjdk-17.0.19.0.10-1.el8.x86_64/bin/java'
+    " Disable YCM in diff mode
+    if &diff
+      let g:ycm_auto_trigger = 0
+    endif
     noremap gd :YcmCompleter GoTo<CR>
+    noremap gb <C-o>
   endif
 
   " NERDTree Settings
