@@ -120,6 +120,10 @@ nvimInstall() {
   copyFiles ${@}
 }
 
+tmuxInstall() {
+  copyFiles ${@}
+}
+
 x11Install() {
   copyFiles "inputrc" "Xdefaults"
   # This is a trick to copy the existing file (the same as the others
@@ -170,10 +174,12 @@ main() {
          [shell]="bashrc bash_aliases bash_logout bash_profile inputrc sshrc" \
          [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
          [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service inputrc Xdefaults" \
+         [tmux]="tmux.conf" \
          [mintty]="minttyrc" [nvim]="${nvim_files[@]}")
   targets=([git]="gitInstall" [shell]="shellInstall" \
            [vim]="vimInstall" [x11]="x11Install" \
-           [mintty]="minttyInstall" [nvim]="nvimInstall")
+           [tmux]="tmuxInstall" [mintty]="minttyInstall" \
+           [nvim]="nvimInstall")
   [ ${#} -eq 0 ] && actions=${targets[@]}
   while [ ${#} -ne 0 ]; do
     case "${1}" in
@@ -182,6 +188,7 @@ main() {
       vim) actions[vim]=${targets[vim]}; shift;;
       nvim) actions[nvim]=${targets[nvim]}; shift;;
       x11) actions[x11]=${targets[x11]}; shift;;
+      tmux) actions[tmux]=${targets[tmux]}; shift;;
       mintty) actions[mintty]=${targets[mintty]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
       diff | d) diffFiles ${files[@]}; return 0;;

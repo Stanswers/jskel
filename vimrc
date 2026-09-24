@@ -143,6 +143,20 @@ if isdirectory(glob("~/.vim/bundle/Vundle.vim"))
     noremap gb <C-o>
   endif
 
+  if IsPluginInstalled('github/copilot.vim')
+    " 1. Disable Copilot's default Tab mapping
+    let g:copilot_no_tab_map = 1
+
+    " 2. Map Alt + ] to accept Copilot suggestions
+    " (Use <M-> for Alt/Meta key in Vim)
+    imap <script><silent><expr> <M-]> copilot#Accept("\<CR>")
+
+    " 3. Optional: Map other keys to cycle through Copilot alternatives
+    imap <M-[> <Plug>(copilot-next)
+    imap <M-p> <Plug>(copilot-previous)
+    imap <M-\> <Plug>(copilot-dismiss)
+  endif
+
   " NERDTree Settings
   if IsPluginInstalled('scrooloose/nerdtree')
     noremap <Leader>nt :NERDTreeToggle<CR>
@@ -191,6 +205,11 @@ noremap <Leader>rt :s/\s\+$//e \| :noh<CR>
 " Enable mouse in terminal for all modes if clipboard is enabled
 if has("clipboard")
   set mouse=a
+  if has("mouse_sgr")
+    set ttymouse=sgr
+  else
+    set ttymouse=xterm2
+  endif
 endif
 
 " Set display characters for list

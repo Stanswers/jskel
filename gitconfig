@@ -14,8 +14,8 @@
     up = "!git pull && git submodule update --init"
     sw = "!git_switch() { git checkout \"$@\" && git submodule update --init; }; git_switch"
     ass = add
-    cc = "!cc() { cd \"$GIT_PREFIX\"; git diff --cached $@ | awk -f ~/scripts/gitchurn; }; cc"
-    c = "!c() { cd \"$GIT_PREFIX\"; git diff $@ | awk -f ~/scripts/gitchurn; }; c"
+    cc = "!cc() { cd \"$GIT_PREFIX\"; git diff --cached $@ | awk -f ~/scripts/awk/gitchurn; }; cc"
+    c = "!c() { cd \"$GIT_PREFIX\"; git diff $@ | awk -f ~/scripts/awk/gitchurn; }; c"
     st = status
     ci = commit
     br = branch -vv
