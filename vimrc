@@ -236,6 +236,8 @@ set wildmode=longest,list,full
 " Allow modified buffers to be hidden
 set hidden
 
+set nowrap
+
 " Disable audio bell
 set noerrorbells
 if exists('+belloff')
