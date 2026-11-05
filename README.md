@@ -9,13 +9,9 @@ Fitness for anyone else is purely coincidental.
 ## Installation
 
 ```bash
-make install
-```
-
-or use `install.sh`
-
-```bash
-./install.sh
+./install.sh                  # everything
+./install.sh shell tmux arc   # or pick targets
+./install.sh diff             # list installed files that differ
 ```
 
 Overwritten files will be backed up as <filename>~YYMMDDHHmmSS
