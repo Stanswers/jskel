@@ -10,7 +10,7 @@ Fitness for anyone else is purely coincidental.
 
 ```bash
 ./install.sh                  # everything
-./install.sh shell tmux arc   # or pick targets
+./install.sh shell tmux   # or pick targets
 ./install.sh diff             # list installed files that differ
 ```
 
