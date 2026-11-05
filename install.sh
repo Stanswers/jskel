@@ -124,6 +124,10 @@ tmuxInstall() {
   copyFiles ${@}
 }
 
+arcInstall() {
+  copyFiles ${@}
+}
+
 x11Install() {
   copyFiles "inputrc" "Xdefaults"
   # This is a trick to copy the existing file (the same as the others
@@ -155,9 +159,9 @@ x11Install() {
 printHelp() {
   local scriptName=$(basename "${0}")
 cat <<END
-Usage:  ${scriptName} [options] [git] [shell] [vim] [nvim] [x11]
+Usage:  ${scriptName} [options] [git] [shell] [vim] [nvim] [x11] [tmux] [mintty] [arc]
         ${scriptName} [options] [diff] [vimdiff] [clean]
-Install jskel git, shell, vim, and x11 files.
+Install jskel git, shell, vim, x11, tmux, mintty, and arc files.
 Clean backed up versions of jskel git, shell, vim, nvim, and x11 files.
 Diff installed jskel files.
 
@@ -175,10 +179,11 @@ main() {
          [vim]="vimrc vim/doc/hell.txt vim/doc/tags" \
          [x11]="config/systemd/user/urxvtd.socket config/systemd/user/urxvtd.service inputrc Xdefaults" \
          [tmux]="tmux.conf" \
-         [mintty]="minttyrc" [nvim]="${nvim_files[@]}")
+         [mintty]="minttyrc" [arc]="arcrc" [nvim]="${nvim_files[@]}")
   targets=([git]="gitInstall" [shell]="shellInstall" \
            [vim]="vimInstall" [x11]="x11Install" \
            [tmux]="tmuxInstall" [mintty]="minttyInstall" \
+           [arc]="arcInstall" \
            [nvim]="nvimInstall")
   [ ${#} -eq 0 ] && actions=${targets[@]}
   while [ ${#} -ne 0 ]; do
@@ -190,6 +195,7 @@ main() {
       x11) actions[x11]=${targets[x11]}; shift;;
       tmux) actions[tmux]=${targets[tmux]}; shift;;
       mintty) actions[mintty]=${targets[mintty]}; shift;;
+      arc) actions[arc]=${targets[arc]}; shift;;
       clean) actions=${empty[@]}; actions[clean]="cleanFiles"; break;;
       diff | d) diffFiles ${files[@]}; return 0;;
       vimdiff | vd) vimdiffFiles ${files[@]}; return 0;;

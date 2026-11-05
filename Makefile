@@ -9,11 +9,17 @@ define CLEAN
 	rm "$(HOME)/.$1"~*_* &> /dev/null || true
 endef
 
-.PHONY: install clean git shell vim x11 gitc shellc vimc x11c
+.PHONY: install clean git shell vim x11 arc gitc shellc vimc x11c arcc
 
-install: git shell vim x11
+install: git shell vim x11 arc
 
-clean: gitc shellc vimc x11c
+clean: gitc shellc vimc x11c arcc
+
+arc:
+	$(call CP,arcrc,0644)
+
+arcc:
+	$(call CLEAN,arcrc)
 
 git:
 	$(call CP,gitconfig,0640)

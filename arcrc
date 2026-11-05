@@ -1,0 +1,66 @@
+# ~/.arcrc — arc (Agent Relay Chat) client config.
+# Set ARC_RC to use another path. See /export/home/justinh/src/arc/examples/arcrc.
+
+[chat]
+# nick for `arc chat` (--as and $ARC_NAME win); applies only to `chat`, so
+# agents sharing this account never inherit it
+name = justinh
+# run (detached, via the shell) when someone @mentions you; message data is in
+# $ARC_FROM, $ARC_ROOM, $ARC_TEXT, $ARC_ID, $ARC_NAME.
+# The bell makes tmux flag the window with '!' until you visit it.
+on_mention = printf '\a' > "$(tmux display -p -t "$TMUX_PANE" '#{pane_tty}')"; tmux display-message "arc: $ARC_FROM in $ARC_ROOM: $ARC_TEXT"
+
+[attn]
+# Message sent by `arc attn --hook` (the Copilot CLI notification hook in
+# ~/.copilot/hooks/arc-attn.json). Built-in fields: {cwd} (folder name),
+# {title}, {message}, {type}, {host}. Unknown fields render empty.
+format = {tmux} {cwd}: {message}
+# Any other key is a shell command whose output fills the field of that name.
+# The hook runs inside the Copilot CLI session, so $TMUX_PANE is available.
+tmux = tmux display-message -p -t "$TMUX_PANE" '[#I]'
+# at most one ping per Copilot session in this many seconds (0 disables)
+debounce = 30
+
+[client]
+# human this agent works for: attn and rate-limit notices go only to them,
+# instead of every human on the server (morgan@peach, etc.)
+owner = justinh
+
+[colors]
+# Solarized Dark (altercation/solarized), expressed as ANSI slots 0-15 rather
+# than 256-cube numbers: this terminal already runs the Solarized palette in
+# tmux/shell/vim, so slot 3 *is* solarized yellow #b58900 and so on. On a
+# terminal without the theme these degrade to plain ANSI, still readable.
+#
+#   slot  solarized        slot  solarized
+#   0     base02           8     base03
+#   1     red     #dc322f  9     orange  #cb4b16
+#   2     green   #859900  10    base01
+#   3     yellow  #b58900  11    base00
+#   4     blue    #268bd2  12    base0
+#   5     magenta #d33682  13    violet  #6c71c4
+#   6     cyan    #2aa198  14    base1
+#   7     base2            15    base3
+
+# Styles use the official Solarized 256-cube numbers rather than ANSI slots
+# because several are bolded, and terminals that render bold as "bright" would
+# silently promote ANSI yellow (3) to slot 11 = base00, a muted gray-green.
+# 256-cube entries are never remapped, so bold stays bold.
+#
+#   240 base01   245 base1    136 yellow
+#    37 cyan      61 violet
+
+# timestamps: base01, the Solarized de-emphasis/comment tone
+time = 240
+# mentions of me: Solarized yellow, the theme's primary attention color
+mention = bold 136
+mention_label = bold
+# command output (/who, /help): base1, Solarized's emphasized body text
+info = bold 245
+# server notices: violet, so they stay distinct from magenta-colored nicks
+notice = 61
+prompt = bold 37
+# room and nick colors - the eight Solarized accents only, no base tones, so
+# names never collide with background or body text. These are ANSI slots: they
+# are never bolded, so the terminal theme supplies exact Solarized hues.
+palette = 4,6,2,3,9,1,5,13
