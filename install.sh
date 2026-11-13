@@ -196,9 +196,9 @@ main() {
       -h) printHelp; return 0;;
       --help) printHelp; return 0;;
       --* | -*)
-        printf "WARN: Unknown option (ignored): %s\n"  "${1}" 1>&2; shift;;
+        printf "ERROR: Unknown option: %s (see -h)\n" "${1}" 1>&2; return 1;;
       *)
-        printf "WARN: Unknown target (ignored): %s\n"  "${1}" 1>&2; shift;;
+        printf "ERROR: Unknown target: %s (see -h)\n" "${1}" 1>&2; return 1;;
     esac
   done
   for action in ${!actions[@]}; do
