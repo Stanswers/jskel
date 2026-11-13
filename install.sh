@@ -40,10 +40,16 @@ mkd() {
   fi
 }
 
+printNotInstalled() {
+  printf "\033[0;33m   %s not installed\033[0m\n" "${1}"
+}
+
 diffFiles() {
   printf "Diff files:\n"
   for f in "${@}"; do
-    if [ -e "${HOME}/.${f}" ] && ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
+    if ! [ -e "${HOME}/.${f}" ]; then
+      printNotInstalled "${f}"
+    elif ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
       printf "\033[0;31m   %s\033[0m\n" "${f}"
     fi
   done
@@ -52,7 +58,9 @@ diffFiles() {
 vimdiffFiles() {
   local files=()
   for f in "${@}"; do
-    if [ -e "${HOME}/.${f}" ] && ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
+    if ! [ -e "${HOME}/.${f}" ]; then
+      printNotInstalled "${f}"
+    elif ! diff "${f}" "${HOME}/.${f}" &> /dev/null; then
       files+=("${f}")
     fi
   done
